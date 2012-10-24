@@ -9,6 +9,6 @@ function fizzBuzz(number) {
   returnVal += (number % 5 === 0) ? 'buzz' : '';
 
   return returnVal || number;
-};
+}
 
 module.exports.fizzBuzz = fizzBuzz;

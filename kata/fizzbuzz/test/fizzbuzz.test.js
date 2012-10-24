@@ -23,18 +23,18 @@
     });
 
     test('fizzBuzz(3n) should return "fizz"', function() {
-      assert.equal(fizzBuzz(3*1), 'fizz');
-      assert.equal(fizzBuzz(3*2), 'fizz');
+      assert.equal(fizzBuzz(3), 'fizz');
+      assert.equal(fizzBuzz(6), 'fizz');
     });
 
     test('fizzBuzz(5n) should return "buzz"', function() {
-      assert.equal(fizzBuzz(5*1), 'buzz');
-      assert.equal(fizzBuzz(5*2), 'buzz');
+      assert.equal(fizzBuzz(5), 'buzz');
+      assert.equal(fizzBuzz(10), 'buzz');
     });
 
     test('fizzBuzz(3*5*n) should return "fizzbuzz"', function() {
-      assert.equal(fizzBuzz(3*5*1), 'fizzbuzz');
-      assert.equal(fizzBuzz(3*5*2), 'fizzbuzz');
+      assert.equal(fizzBuzz(15), 'fizzbuzz');
+      assert.equal(fizzBuzz(30), 'fizzbuzz');
     });
   });
 })();
