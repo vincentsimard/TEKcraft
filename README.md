@@ -6,4 +6,4 @@ TEKcraft
 2012-10-22: Now playing: "The Green Field Adventure"
 
 - Unit testing and stuff
-- Trying out mocha & chai (tdd/assert style), yeoman
+- Trying out mocha & chai (tdd/assert style)
