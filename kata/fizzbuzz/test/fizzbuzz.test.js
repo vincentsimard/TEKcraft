@@ -17,36 +17,24 @@
       assert.equal(fizzBuzz('a'), '');
     });
 
-    test('fizzBuzz(1) should return "1"', function() {
+    test('fizzBuzz(n) where n is a number not divisible by 3 or 5 should return the number', function() {
       assert.equal(fizzBuzz(1), '1');
-    });
-
-    test('fizzBuzz(2) should return "2"', function() {
       assert.equal(fizzBuzz(2), '2');
     });
 
-    test('fizzBuzz(3) should return "fizz"', function() {
-      assert.equal(fizzBuzz(3), 'fizz');
+    test('fizzBuzz(3n) should return "fizz"', function() {
+      assert.equal(fizzBuzz(3*1), 'fizz');
+      assert.equal(fizzBuzz(3*2), 'fizz');
     });
 
-    test('fizzBuzz(5) should return "buzz"', function() {
-      assert.equal(fizzBuzz(5), 'buzz');
+    test('fizzBuzz(5n) should return "buzz"', function() {
+      assert.equal(fizzBuzz(5*1), 'buzz');
+      assert.equal(fizzBuzz(5*2), 'buzz');
     });
 
-    test('fizzBuzz(6) should return "fizz"', function() {
-      assert.equal(fizzBuzz(6), 'fizz');
-    });
-
-    test('fizzBuzz(8) should return "8"', function() {
-      assert.equal(fizzBuzz(8), '8');
-    });
-
-    test('fizzBuzz(10) should return "buzz"', function() {
-      assert.equal(fizzBuzz(10), 'buzz');
-    });
-
-    test('fizzBuzz(15) should return "fizzbuzz"', function() {
-      assert.equal(fizzBuzz(15), 'fizzbuzz');
+    test('fizzBuzz(3*5*n) should return "fizzbuzz"', function() {
+      assert.equal(fizzBuzz(3*5*1), 'fizzbuzz');
+      assert.equal(fizzBuzz(3*5*2), 'fizzbuzz');
     });
   });
 })();
