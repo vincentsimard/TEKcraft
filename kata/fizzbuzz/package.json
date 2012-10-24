@@ -1,0 +1,22 @@
+{
+  "name": "fizzbuzz",
+  "version": "0.0.0",
+  "description": "FizzBuzz kata with mocha",
+  "main": "fizzbuzz.js",
+  "scripts": {
+    "test": "mocha -u tdd",
+    "testw": "mocha -u tdd -R min -w"
+  },
+  "repository": "",
+  "keywords": [
+    "fizzbuzz",
+    "kata",
+    "tdd",
+    "mocha"
+  ],
+  "author": "Vincent Simard",
+  "license": "BSD",
+  "devDependencies": {
+    "mocha": "1.6.x"
+  }
+}
