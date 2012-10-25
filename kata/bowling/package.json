@@ -1,7 +1,26 @@
 {
-  "author": "",
-  "name": "",
+  "name": "bowling",
   "version": "0.0.0",
-  "dependencies": {},
-  "devDependencies": {}
+  "description": "Bowling score kata",
+  "main": "game.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "mocha -u tdd -R list"
+  },
+  "repository": "",
+  "keywords": [
+    "bowling",
+    "score",
+    "game",
+    "kata",
+    "tdd",
+    "TEKcraft"
+  ],
+  "author": "Vincent Simard",
+  "license": "BSD",
+  "devDependencies": {
+    "mocha": "1.6.x"
+  }
 }
