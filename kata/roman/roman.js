@@ -17,14 +17,14 @@ function intToRoman(number) {
     'CMC':  'M'
   };
 
-  if (number > 0) {
-    for (var i = 0; i < number; i++) {
-      returnValue += 'I';
+  if (number < 1) { return returnValue; }
 
-      for (var pattern in symbolPatterns) {
-        var conversion = symbolPatterns[pattern];
-        returnValue = returnValue.replace(pattern, conversion);
-      }
+  for (var i = 0; i < number; i++) {
+    returnValue += 'I';
+
+    for (var pattern in symbolPatterns) {
+      var conversion = symbolPatterns[pattern];
+      returnValue = returnValue.replace(pattern, conversion);
     }
   }
 
