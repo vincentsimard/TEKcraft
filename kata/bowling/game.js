@@ -4,12 +4,19 @@ var Frame = require('./Frame').Frame;
 
 var Game = (function() {
   function Game() {
-    this.frames = [];
-
+    var args = Array.prototype.slice.call(arguments, 0);
     var nbFrames = 10;
 
+    this.frames = [];
+
+    // Initialize with 10 empty frames
     while(nbFrames--) {
       this.frames.push(new Frame());
+    }
+
+    // If frames where passed as arguments, add them to the game object
+    for (var i = 0; i < arguments.length; i++) {
+      this.frames[i].rolls = args[i];
     }
   }
 
@@ -18,16 +25,23 @@ var Game = (function() {
     if (isNaN(pins)) { throw new TypeError(); }
 
     var currentFrameIndex = this.getCurrentFrameIndex() - 1;
-    this.frames[currentFrameIndex].rolls.push(pins);
 
-    // console.log(this.frames[currentFrameIndex].rolls);
+    this.frames[currentFrameIndex].rolls.push(pins);
   };
   
   Game.prototype.getScore = function() {
     var score = 0;
+    var nextRolls = [];
 
     for (var i = 0; i < this.frames.length; i++) {
-      score += this.frames[i].getNbKnockedPins();
+      // Get rolls from next two frames
+      for (var j = 1; j <= 2; j++) {
+        if (typeof this.frames[i + j] !== 'undefined') {
+          nextRolls.concat(this.frames[i + j].rolls);
+        }
+      }
+
+      score += this.frames[i].getScore(nextRolls);
     }
 
     return score;
@@ -37,7 +51,6 @@ var Game = (function() {
     var frame;
     var frameIndex = 0;
     var nbRolls = 0;
-    var nbKnockedPins = 0;
 
     for (var i = 0; i < this.frames.length; i++) {
       frame = this.frames[i];
@@ -48,10 +61,13 @@ var Game = (function() {
         break;
       }
 
-      nbKnockedPins = frame.getNbKnockedPins();
-
-      if (nbRolls < 2 && nbKnockedPins < 10) {
-        frameIndex = i;
+      if (i < 9) {
+        if (nbRolls < 2 && !frame.isStrike()) {
+          frameIndex = i;
+          break;
+        }
+      } else {
+        frameIndex = 8;
         break;
       }
     }
