@@ -36,8 +36,6 @@ var Frame = (function() {
     return (this.getNbKnockedPins() === 10 && this.rolls.length === 2);
   };
 
-
-
   return Frame;
 })();
 
