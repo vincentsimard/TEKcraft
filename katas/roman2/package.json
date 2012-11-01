@@ -1,0 +1,23 @@
+{
+  "name": "roman",
+  "version": "0.0.0",
+  "description": "Roman numerals kata",
+  "main": "roman.js",
+  "scripts": {
+    "test": "mocha -R list"
+  },
+  "repository": "",
+  "keywords": [
+    "roman",
+    "numerals",
+    "conversion",
+    "tdd",
+    "kata",
+    "TEKcraft"
+  ],
+  "author": "Vincent Simard",
+  "license": "BSD",
+  "devDependencies": {
+    "mocha": "1.6.x"
+  }
+}
