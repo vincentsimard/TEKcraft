@@ -1,0 +1,12 @@
+{
+  "name": "gol",
+  "version": "0.0.0",
+  "description": "Conway's Game of Life kata",
+  "main": "gol.js",
+  "scripts": {
+    "test": "mocha -R list"
+  },
+  "repository": "",
+  "author": "Vincent Simard",
+  "license": "BSD"
+}
