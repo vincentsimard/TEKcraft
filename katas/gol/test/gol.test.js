@@ -6,10 +6,16 @@
 
   var GameOfLife = require('./../gol').GameOfLife;
 
-  describe('GameOfLife()', function() {
+  describe('GameOfLife', function() {
     it('should be defined', function() {
       GameOfLife.should.not.be.undefined;
-      GameOfLife.should.be.a('function');
     });
+
+    // describe('step()', function() {
+    //   it('should be defined', function() {
+    //     GameOfLife.step.should.not.be.undefined;
+    //     GameOfLife.step.should.be.a('function');
+    //   });
+    // });
   });
 })();
