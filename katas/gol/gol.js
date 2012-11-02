@@ -37,6 +37,16 @@ var GameOfLife = function(gridDimensions) {
 
 GameOfLife.prototype.step = function() {};
 
+GameOfLife.prototype.print = function() {
+  var output = '';
+
+  for (var i = 0; i < this.grid.length; i++) {
+    output += new Array(this.grid[0].length + 1).join(".") + '\n';
+  }
+
+  return output;
+};
+
 
 
 module.exports.GameOfLife = GameOfLife;

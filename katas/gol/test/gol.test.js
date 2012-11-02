@@ -96,9 +96,39 @@
 
 
     describe('step()', function() {
-      it('should be defined as a function', function() {
+      it('should be defined', function() {
         new GameOfLife().step.should.not.be.undefined;
         new GameOfLife().step.should.be.a('function');
+      });
+    });
+
+
+
+    describe('print()', function() {
+      it('should be defined', function() {
+        new GameOfLife().print.should.not.be.undefined;
+        new GameOfLife().print.should.be.a('function');
+      });
+
+      it('should print the default dimensions grid', function() {
+        var output = '........\n' +
+                     '........\n' +
+                     '........\n' +
+                     '........\n' +
+                     '........\n' +
+                     '........\n' +
+                     '........\n' +
+                     '........\n';
+
+        new GameOfLife().print().should.equal(output);
+      });
+
+      it('should print a custom dimensions grid', function() {
+        var output = '..\n' + 
+                     '..\n' +
+                     '..\n';
+
+        new GameOfLife([3,2]).print().should.equal(output);
       });
     });
   });
