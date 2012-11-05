@@ -16,6 +16,8 @@ function setupGrid(x, y) {
 
 // Constructor
 var GameOfLife = function(gridDimensions) {
+  var x, y;
+
   // Parameters validation
   if (typeof gridDimensions !== 'undefined') {
     if (isNaN(gridDimensions)) {
@@ -29,10 +31,13 @@ var GameOfLife = function(gridDimensions) {
 
   // Grid setup
   if (isNaN(gridDimensions)) {
-    this.grid = setupGrid(gridDimensions[0], gridDimensions[1]);
+    x = gridDimensions[0];
+    y = gridDimensions[1];
   } else {
-    this.grid = setupGrid(gridDimensions, gridDimensions);
+    x = y = gridDimensions;
   }
+
+  this.grid = setupGrid(x, y);
 };
 
 GameOfLife.prototype.step = function() {};
@@ -42,7 +47,7 @@ GameOfLife.prototype.print = function() {
 
   for (var i = 0; i < this.grid.length; i++) {
     for (var j = 0; j < this.grid[i].length; j++) {
-      output += !!this.grid[i][j] ? '*' : '.';
+      output += !!this.grid[j][i] ? '*' : '.';
     }
     output += '\n';
   }
@@ -50,6 +55,17 @@ GameOfLife.prototype.print = function() {
   return output;
 };
 
+GameOfLife.prototype.spawn = function(x, y) {
+  if (x > this.grid.length && y > this.grid[0].length) { throw new RangeError(); }
+
+  this.grid[x][y] = true;
+};
+
+GameOfLife.prototype.kill = function(x, y) {
+  if (x > this.grid.length && y > this.grid[0].length) { throw new RangeError(); }
+  
+  this.grid[x][y] = false;
+};
 
 
 

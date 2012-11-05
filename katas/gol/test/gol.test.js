@@ -6,6 +6,14 @@
 
   var GameOfLife = require('./../gol').GameOfLife;
 
+  var gol;
+
+  beforeEach(function() {
+    gol = new GameOfLife();
+  });
+
+
+
   describe('GameOfLife', function() {
     it('should be defined', function() {
       GameOfLife.should.not.be.undefined;
@@ -47,7 +55,7 @@
 
         it('should set the grid dimensions when receiving an array of 2 numbers', function() {
           function testGridDimensions(dimensions) {
-            var gol = new GameOfLife(dimensions);
+            gol = new GameOfLife(dimensions);
             var xLen = gol.grid.length;
             var yLen = gol.grid[0].length;
 
@@ -61,7 +69,7 @@
 
         it('should set the grid dimensions when receiving a number', function() {
           function testGridDimensions(dimensions) {
-            var gol = new GameOfLife(dimensions);
+            gol = new GameOfLife(dimensions);
             var xLen = gol.grid.length;
             var yLen = gol.grid[0].length;
 
@@ -78,13 +86,11 @@
 
 
     describe('grid', function() {
-      it('should be defined as an array', function() {
-        new GameOfLife().grid.should.not.be.undefined;
-        new GameOfLife().grid.should.be.instanceof(Array);
+      it('should be defined', function() {
+        gol.grid.should.not.be.undefined;
       });
 
       it('should have 8x8 dimensions by default', function() {
-        var gol = new GameOfLife();
         var xLen = gol.grid.length;
         var yLen = gol.grid[0].length;
 
@@ -95,9 +101,34 @@
 
 
       describe('spawn()', function() {
-        it('should set a cell to life'
-          // , function() {}
-        );
+        it('should set a cell to life', function() {
+          gol.spawn(1,2);
+          gol.spawn(4,3);
+
+          gol.grid[1][2].should.be.true;
+          gol.grid[4][3].should.be.true;
+        });
+
+        it('should throw an error when trying to spawn a cell that is out of bound', function() {
+          var fnInvalid = (function() { gol.spawn(9,9); });
+
+          fnInvalid.should.throw(RangeError);
+        });
+      });
+
+      describe('kill()', function() {
+        it('should kill a cell', function() {
+          gol.spawn(6,7);
+          gol.kill(6,7);
+
+          gol.grid[6][7].should.be.false;
+        });
+
+        it('should throw an error when trying to kill a cell that is out of bound', function() {
+          var fnInvalid = (function() { gol.kill(9,9); });
+
+          fnInvalid.should.throw(RangeError);
+        });
       });
     });
 
@@ -105,8 +136,8 @@
 
     describe('step()', function() {
       it('should be defined', function() {
-        new GameOfLife().step.should.not.be.undefined;
-        new GameOfLife().step.should.be.a('function');
+        gol.step.should.not.be.undefined;
+        gol.step.should.be.a('function');
       });
 
       it('should return all dead cells if all other cells are dead', function() {
@@ -121,7 +152,6 @@
           ['', '', '', '', '', '', '', '']
         ];
 
-        var gol = new GameOfLife();
         gol.step();
 
         gol.grid.join('').should.equal(defaultGrid.join(''));
@@ -132,8 +162,8 @@
 
     describe('print()', function() {
       it('should be defined', function() {
-        new GameOfLife().print.should.not.be.undefined;
-        new GameOfLife().print.should.be.a('function');
+        gol.print.should.not.be.undefined;
+        gol.print.should.be.a('function');
       });
 
       it('should output the default grid', function() {
@@ -146,7 +176,7 @@
                      '........\n' +
                      '........\n';
 
-        new GameOfLife().print().should.equal(output);
+        gol.print().should.equal(output);
       });
 
       it('should output a custom dimensions grid', function() {
@@ -154,20 +184,22 @@
                      '..\n' +
                      '..\n';
 
-        new GameOfLife([3,2]).print().should.equal(output);
+        gol = new GameOfLife([3,2]);
+        gol.print().should.equal(output);
       });
 
       it('should output a * for live cells', function() {
-        var output, liveCell;
-        var gol = new GameOfLife();
-        var grid = gol.grid;
+        var output, liveCell1, liveCell2;
 
-        grid[0][0] = true;
+        gol.spawn(0,0);
+        gol.spawn(6,0);
 
         output = gol.print();
-        liveCell = output.charAt(0);
+        liveCell1 = output.charAt(0);
+        liveCell2 = output.charAt(6);
 
-        liveCell.should.equal('*');
+        liveCell1.should.equal('*');
+        liveCell2.should.equal('*');
       });
     });
   });
