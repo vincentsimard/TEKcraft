@@ -41,11 +41,15 @@ GameOfLife.prototype.print = function() {
   var output = '';
 
   for (var i = 0; i < this.grid.length; i++) {
-    output += new Array(this.grid[0].length + 1).join(".") + '\n';
+    for (var j = 0; j < this.grid[i].length; j++) {
+      output += !!this.grid[i][j] ? '*' : '.';
+    }
+    output += '\n';
   }
 
   return output;
 };
+
 
 
 

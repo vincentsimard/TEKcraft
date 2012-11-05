@@ -91,6 +91,14 @@
         xLen.should.equal(8);
         yLen.should.equal(8);
       });
+
+
+
+      describe('spawn()', function() {
+        it('should set a cell to life'
+          // , function() {}
+        );
+      });
     });
 
 
@@ -99,6 +107,24 @@
       it('should be defined', function() {
         new GameOfLife().step.should.not.be.undefined;
         new GameOfLife().step.should.be.a('function');
+      });
+
+      it('should return all dead cells if all other cells are dead', function() {
+        var defaultGrid = [
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', '']
+        ];
+
+        var gol = new GameOfLife();
+        gol.step();
+
+        gol.grid.join('').should.equal(defaultGrid.join(''));
       });
     });
 
@@ -110,7 +136,7 @@
         new GameOfLife().print.should.be.a('function');
       });
 
-      it('should print the default dimensions grid', function() {
+      it('should output the default grid', function() {
         var output = '........\n' +
                      '........\n' +
                      '........\n' +
@@ -123,12 +149,25 @@
         new GameOfLife().print().should.equal(output);
       });
 
-      it('should print a custom dimensions grid', function() {
+      it('should output a custom dimensions grid', function() {
         var output = '..\n' + 
                      '..\n' +
                      '..\n';
 
         new GameOfLife([3,2]).print().should.equal(output);
+      });
+
+      it('should output a * for live cells', function() {
+        var output, liveCell;
+        var gol = new GameOfLife();
+        var grid = gol.grid;
+
+        grid[0][0] = true;
+
+        output = gol.print();
+        liveCell = output.charAt(0);
+
+        liveCell.should.equal('*');
       });
     });
   });
