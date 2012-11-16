@@ -52,17 +52,29 @@ exports.LEDDisplay = class LEDDisplay
 
       if number is 10
         result = ' _ ' + '   ' + '\n' +
-              '| |' + '  |' + '\n' +
-              '|_|' + '  |'
+                 '| |' + '  |' + '\n' +
+                 '|_|' + '  |'
 
       if number is 11
         result = '   ' + '   ' + '\n' +
-              '  |' + '  |' + '\n' +
-              '  |' + '  |'      
+                 '  |' + '  |' + '\n' +
+                 '  |' + '  |'      
 
     return result
 
 
 
-  concat: (LEDDigit) ->
-    return
+  concat: (digit1, digit2) ->
+    result = ''
+
+    splitD1 = digit1.split('\n')
+    splitD2 = digit2.split('\n')
+
+    # splitD2[i] will not work if digit had more lines...
+    # let's assume all digits are always 3 lines long
+    for i in [0...splitD1.length]
+      result += splitD1[i] + ' ' + splitD2[i] + '\n'
+
+    result = result.replace(/\n$/, '')
+
+    return result

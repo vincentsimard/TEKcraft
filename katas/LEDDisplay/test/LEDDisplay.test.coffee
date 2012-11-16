@@ -87,3 +87,15 @@ describe 'LED Display', ->
   describe 'concat', ->
     it 'should be defined', ->
       led.concat.should.not.be.undefined
+
+    it 'should concat two strings with a space between if they do not have carriage return', ->
+      led.concat('fizz', 'buzz').should.equal 'fizz buzz'
+
+    it 'should concat each line of text individually', ->
+      led.concat('fizz\nbuzz', 'y\nah').should.equal 'fizz y\n' +
+                                                     'buzz ah'
+
+      led.concat('abc\ndef\nghi\njkl', 'mno\nqrs\ntuv\nwxy').should.equal 'abc mno\n' +
+                                                                          'def qrs\n' +
+                                                                          'ghi tuv\n' +
+                                                                          'jkl wxy'
