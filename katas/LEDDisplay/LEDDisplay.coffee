@@ -1,6 +1,6 @@
 exports.LEDDisplay = class LEDDisplay
 
-  LEDDigits = 
+  LEDDigits:
     0: ' _ \n' +
        '| |\n' +
        '|_|'
@@ -39,7 +39,7 @@ exports.LEDDisplay = class LEDDisplay
 
     # Single digit number
     if number < 10
-      led = LEDDigits[number]
+      result = @LEDDigits[number]
     # Multiple digits number
     else
 
@@ -47,17 +47,22 @@ exports.LEDDisplay = class LEDDisplay
       digits = (number + '')
 
       for i in [0..digits.length-1]
-        led += addLEDDigits(digits[i])
+        led += concat(digits[i])
       ###
 
       if number is 10
-        led = ' _ ' + '   ' + '\n' +
+        result = ' _ ' + '   ' + '\n' +
               '| |' + '  |' + '\n' +
               '|_|' + '  |'
 
       if number is 11
-        led = '   ' + '   ' + '\n' +
+        result = '   ' + '   ' + '\n' +
               '  |' + '  |' + '\n' +
               '  |' + '  |'      
 
-    return led
+    return result
+
+
+
+  concat: (LEDDigit) ->
+    return
