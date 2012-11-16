@@ -33,11 +33,15 @@ exports.LEDDisplay = class LEDDisplay
        '  |'
 
   toLED: (number) ->
-    if arguments.length is 0
-      return ''
-    else
-      if number is 0
-        return LEDDigits[0]
+    led = ''
 
-      if number is 1
-        return LEDDigits[1]
+    if arguments.length is 0
+      led = ''
+    else if number < 10
+      led = LEDDigits[number]
+    else
+      led = ' _ ' + '   ' + '\n' +
+            '| |' + '  |' + '\n' +
+            '|_|' + '  |'
+
+    return led

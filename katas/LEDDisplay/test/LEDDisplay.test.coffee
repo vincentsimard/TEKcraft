@@ -58,6 +58,14 @@ describe 'LED Display', ->
     describe 'with argument "number" as a single digit', ->
       it 'should return the LED equivalent', ->
         led = new LEDDisplay()
-        led.toLED(0).should.equal LEDDigits[0]
-        led.toLED(1).should.equal LEDDigits[1]
+        for i in [0..9]
+          led.toLED(i).should.equal LEDDigits[i]
+
         return
+
+    describe 'with argument "number" having more than 1 digit', ->
+      it 'should concat two digits together', ->
+        led = new LEDDisplay()
+        led.toLED(10).should.equal ' _ ' + '   ' + '\n' +
+                                   '| |' + '  |' + '\n' +
+                                   '|_|' + '  |'
