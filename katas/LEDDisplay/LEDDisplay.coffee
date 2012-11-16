@@ -33,15 +33,31 @@ exports.LEDDisplay = class LEDDisplay
        '  |'
 
   toLED: (number) ->
-    led = ''
+    # Invalid arguments
+    return '' if arguments.length is 0
+    throw new Error() if isNaN number
 
-    if arguments.length is 0
-      led = ''
-    else if number < 10
+    # Single digit number
+    if number < 10
       led = LEDDigits[number]
+    # Multiple digits number
     else
-      led = ' _ ' + '   ' + '\n' +
-            '| |' + '  |' + '\n' +
-            '|_|' + '  |'
+
+      ###
+      digits = (number + '')
+
+      for i in [0..digits.length-1]
+        led += addLEDDigits(digits[i])
+      ###
+
+      if number is 10
+        led = ' _ ' + '   ' + '\n' +
+              '| |' + '  |' + '\n' +
+              '|_|' + '  |'
+
+      if number is 11
+        led = '   ' + '   ' + '\n' +
+              '  |' + '  |' + '\n' +
+              '  |' + '  |'      
 
     return led

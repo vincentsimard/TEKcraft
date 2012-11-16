@@ -55,6 +55,12 @@ describe 'LED Display', ->
         led = new LEDDisplay()
         led.toLED().should.equal ''
 
+    describe 'with invalid arguments', ->
+      it 'should throw an error', ->
+        led = new LEDDisplay()
+        fnInvalid = (-> led.toLED('a'));
+        fnInvalid.should.throw Error;
+
     describe 'with argument "number" as a single digit', ->
       it 'should return the LED equivalent', ->
         led = new LEDDisplay()
@@ -69,3 +75,7 @@ describe 'LED Display', ->
         led.toLED(10).should.equal ' _ ' + '   ' + '\n' +
                                    '| |' + '  |' + '\n' +
                                    '|_|' + '  |'
+
+        led.toLED(11).should.equal '   ' + '   ' + '\n' +
+                                   '  |' + '  |' + '\n' +
+                                   '  |' + '  |'                                   
