@@ -76,13 +76,13 @@ describe 'LED Display', ->
 
     describe 'with argument "number" having more than 1 digit', ->
       it 'should concat two digits together', ->
-        led.toLED(10).should.equal ' _ ' + '   ' + '\n' +
-                                   '| |' + '  |' + '\n' +
-                                   '|_|' + '  |'
+        led.toLED(10).should.equal '     _ ' + '\n' +
+                                   '  | | |' + '\n' +
+                                   '  | |_|'
 
-        led.toLED(11).should.equal '   ' + '   ' + '\n' +
-                                   '  |' + '  |' + '\n' +
-                                   '  |' + '  |'
+        led.toLED(11).should.equal '       ' + '\n' +
+                                   '  |   |' + '\n' +
+                                   '  |   |'
 
   describe 'concat', ->
     it 'should be defined', ->
@@ -91,7 +91,7 @@ describe 'LED Display', ->
     it 'should concat two strings with a space between if they do not have carriage return', ->
       led.concat('fizz', 'buzz').should.equal 'fizz buzz'
 
-    it 'should concat each line of text individually', ->
+    it 'should concat each line of text individually with a space between', ->
       led.concat('fizz\nbuzz', 'y\nah').should.equal 'fizz y\n' +
                                                      'buzz ah'
 

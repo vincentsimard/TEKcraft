@@ -37,28 +37,19 @@ exports.LEDDisplay = class LEDDisplay
     return '' if arguments.length is 0
     throw new Error() if isNaN number
 
+    result = ''
+    numberS = number + ''
+    numberSLen = numberS.length
+
     # Single digit number
-    if number < 10
+    if numberSLen < 2
       result = @LEDDigits[number]
+
     # Multiple digits number
     else
 
-      ###
-      digits = (number + '')
-
-      for i in [0..digits.length-1]
-        led += concat(digits[i])
-      ###
-
-      if number is 10
-        result = ' _ ' + '   ' + '\n' +
-                 '| |' + '  |' + '\n' +
-                 '|_|' + '  |'
-
-      if number is 11
-        result = '   ' + '   ' + '\n' +
-                 '  |' + '  |' + '\n' +
-                 '  |' + '  |'      
+      for i in [0...numberSLen]
+        result = @concat(result, @toLED(numberS[i]))
 
     return result
 
@@ -70,9 +61,9 @@ exports.LEDDisplay = class LEDDisplay
     splitD1 = digit1.split('\n')
     splitD2 = digit2.split('\n')
 
-    # splitD2[i] will not work if digit had more lines...
-    # let's assume all digits are always 3 lines long
-    for i in [0...splitD1.length]
+    if digit1.length is 0 then return digit2
+
+    for i in [0...splitD2.length]
       result += splitD1[i] + ' ' + splitD2[i] + '\n'
 
     result = result.replace(/\n$/, '')
