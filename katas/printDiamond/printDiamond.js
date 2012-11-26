@@ -1,6 +1,12 @@
 'use strict';
 
 var printDiamond = function(char) {
+  var alphabet,
+      charPos,
+      arrLen,
+      lineLen,
+      arr = [];
+
   if (arguments.length === 0) { return ''; }
   if (arguments.length > 1) { throw new Error(); }
 
@@ -8,19 +14,16 @@ var printDiamond = function(char) {
   char = (char + '').toUpperCase();
   if (!isALetter(char)) { throw new TypeError(); }
 
-  if (char === 'A') {
-    return char;
-  } else if (char === 'B') {
-    return '   \n' +
-           '   \n' +
-           '   \n';
-  } else {
-    return '     \n' +
-           '     \n' +
-           '     \n' +
-           '     \n' +
-           '     \n';
+  alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  charPos = alphabet.indexOf(char);
+  arrLen = (charPos * 2) + 1;
+  lineLen = arrLen;
+
+  for (var i = 0; i < arrLen; i++) {
+    arr.push(Array(lineLen + 1).join(' '));
   }
+
+  return arr.join('\n');
 };
 
 function isALetter(str) {

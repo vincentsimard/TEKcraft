@@ -33,7 +33,7 @@
       var getLines = function(char) {
         var result = printDiamond(char);
         return result.split('\n').clean('');
-      }
+      };
 
       describe('the number of lines returned', function() {
         it('should equal: (position of the char in the alphabet (zero-based)) * 2 + 1', function() {
@@ -71,7 +71,7 @@
         it('should have a length equal: (position of the char in the alphabet (zero-based)) * 2 + 1', function() {
           function getMaxLength(char) {
             var lines = getLines(char);
-            return Math.max.apply(Math, lines.map(function (e) { return e.length }));
+            return Math.max.apply(Math, lines.map(function (e) { return e.length; }));
           }
 
           getMaxLength('A').should.equal(1);
@@ -107,7 +107,7 @@
 
   Array.prototype.clean = function(deleteValue) {
     for (var i = 0; i < this.length; i++) {
-      if (this[i] == deleteValue) {         
+      if (this[i] == deleteValue) {
         this.splice(i, 1);
         i--;
       }
