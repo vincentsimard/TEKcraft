@@ -80,6 +80,47 @@
         });
       });
 
+      describe('the first and last line returned', function() {
+        it('should equal "A" when trimmed', function() {
+          function testFirstAndLastEqualA(char) {
+            var lines = getLines(char).trim();
+            lines[0].should.equal('A');
+            lines[lines.length - 1].should.equal('A');
+          }
+
+          testFirstAndLastEqualA('A');
+          testFirstAndLastEqualA('B');
+          testFirstAndLastEqualA('C');
+        });
+
+
+        it('should only have one character that is not a space', function() {
+          function testOnlyOneChar(char) {
+            var lines = getLines(char).trim();
+            var notSpaces = lines.clean(' ');
+            notSpaces[0].length.should.equal(1);
+            notSpaces[notSpaces.length - 1].length.should.equal(1);
+          }
+
+          testOnlyOneChar('A');
+          testOnlyOneChar('B');
+          testOnlyOneChar('C');
+        });
+
+        it('should have the character A at the center of the line', function() {
+          function testCharInTheMiddle(char) {
+            var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var charPos = alphabet.indexOf(char);
+            var lines = getLines(char);
+            lines[0].indexOf('A').should.equal(charPos);
+            lines[lines.length - 1].indexOf('A').should.equal(charPos);
+          }
+
+          testCharInTheMiddle('A');
+          testCharInTheMiddle('B');
+          testCharInTheMiddle('C');
+        });
+      });
 
 /*
       describe('"A"', function() {
@@ -111,6 +152,13 @@
         this.splice(i, 1);
         i--;
       }
+    }
+    return this;
+  };
+
+  Array.prototype.trim = function() {
+    for (var i = 0; i < this.length; i++) {
+      this[i] = this[i].trim();
     }
     return this;
   };
