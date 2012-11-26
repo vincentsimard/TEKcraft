@@ -1,0 +1,26 @@
+{
+  "name": "printDiamond",
+  "version": "0.0.0",
+  "description": "Print Diamond kata",
+  "main": "printDiamond.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha -R list"
+  },
+  "repository": "",
+  "keywords": [
+    "kata",
+    "tdd",
+    "tekcraft",
+    "print",
+    "diamond",
+    "cyber-dojo"
+  ],
+  "author": "Vincent Simard",
+  "license": "BSD",
+  "dependencies": {
+    "chai": ">= 1.3.0"
+  }
+}
