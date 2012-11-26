@@ -30,36 +30,54 @@
     });
 
     describe('with argument "char"', function() {
-      it('returned line length should be equal to: (position of the char in the alphabet (zero-based)) * 2 + 1', function() {
-        function getMaxLength(char) {
-          var result = printDiamond(char);
-          var lines = result.split('\n').clean('');
-          return Math.max.apply(Math, lines.map(function (e) { return e.length }));
-        }
+      var getLines = function(char) {
+        var result = printDiamond(char);
+        return result.split('\n').clean('');
+      }
 
-        getMaxLength('A').should.equal(1);
-        getMaxLength('B').should.equal(3);
-        getMaxLength('C').should.equal(5);
-      });
-
-      it('each returned line should have the same length', function() {
-        function hasSameLineLength(char) {
-          var result = printDiamond(char);
-          var lines = result.split('\n').clean('');
-          var ret = true;
-
-          if (lines.length < 2) { return true; }
-
-          for (var i = 1; i < lines.length; i++) {
-            ret = ret && (lines[0].length === lines[i].length);
+      describe('the number of lines returned', function() {
+        it('should equal: (position of the char in the alphabet (zero-based)) * 2 + 1', function() {
+          function getNbLines(char) {
+            var lines = getLines(char);
+            return lines.length;
           }
 
-          return ret;
-        }
+          getNbLines('A').should.equal(1);
+          getNbLines('B').should.equal(3);
+          getNbLines('C').should.equal(5);
+        });
+      });
 
-        hasSameLineLength('A').should.be.true;
-        hasSameLineLength('B').should.be.true;
-        hasSameLineLength('C').should.be.true;
+      describe('each returned line', function() {
+        it('should have the same length', function() {
+          function hasSameLineLength(char) {
+            var lines = getLines(char);
+            var ret = true;
+
+            if (lines.length < 2) { return true; }
+
+            for (var i = 1; i < lines.length; i++) {
+              ret = ret && (lines[0].length === lines[i].length);
+            }
+
+            return ret;
+          }
+
+          hasSameLineLength('A').should.be.true;
+          hasSameLineLength('B').should.be.true;
+          hasSameLineLength('C').should.be.true;
+        });
+
+        it('should have a length equal: (position of the char in the alphabet (zero-based)) * 2 + 1', function() {
+          function getMaxLength(char) {
+            var lines = getLines(char);
+            return Math.max.apply(Math, lines.map(function (e) { return e.length }));
+          }
+
+          getMaxLength('A').should.equal(1);
+          getMaxLength('B').should.equal(3);
+          getMaxLength('C').should.equal(5);
+        });
       });
 
 

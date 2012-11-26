@@ -11,15 +11,15 @@ var printDiamond = function(char) {
   if (char === 'A') {
     return char;
   } else if (char === 'B') {
-    return ' A \n' +
-           'B B\n' +
-           ' A \n';
+    return '   \n' +
+           '   \n' +
+           '   \n';
   } else {
-    return '  A  \n' +
-           ' B B \n' +
-           'C   C\n' +
-           ' B B \n' +
-           '  A  \n';
+    return '     \n' +
+           '     \n' +
+           '     \n' +
+           '     \n' +
+           '     \n';
   }
 };
 
