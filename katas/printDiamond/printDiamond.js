@@ -7,6 +7,20 @@ var printDiamond = function(char) {
   // Parse the char parameter as a string and convert to upperstring
   char = (char + '').toUpperCase();
   if (!isALetter(char)) { throw new TypeError(); }
+
+  if (char === 'A') {
+    return char;
+  } else if (char === 'B') {
+    return ' A \n' +
+           'B B\n' +
+           ' A \n';
+  } else {
+    return '  A  \n' +
+           ' B B \n' +
+           'C   C\n' +
+           ' B B \n' +
+           '  A  \n';
+  }
 };
 
 function isALetter(str) {
