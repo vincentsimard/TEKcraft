@@ -1,5 +1,7 @@
 'use strict';
 
+var ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
 var printDiamond = function(char) {
   var arr = [];
 
@@ -18,22 +20,16 @@ var printDiamond = function(char) {
 
 
 function buildArray(char) {
-  var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-      charPos = alphabet.indexOf(char),
+  var charPos = ALPHABET.indexOf(char),
       arrLen = (charPos * 2) + 1,
       lineLen = arrLen,
-      arr = [],
-      tmpChar,
-      tmpCharPos;
+      arr = [];
 
-  arr = getDefaultArray(arrLen, lineLen);
+  arr = createDefaultArray(arrLen, lineLen);
 
   // Top part of the diamond
   for (var i = 0; i <= charPos; i++) {
-    tmpChar = alphabet.charAt(i);
-    tmpCharPos = alphabet.indexOf(tmpChar);
-    arr[i] = arr[i].substr(0, charPos - tmpCharPos) + tmpChar + arr[i].substr(charPos - tmpCharPos + 1);
-    arr[i] = arr[i].substr(0, charPos + tmpCharPos) + tmpChar + arr[i].substr(charPos + tmpCharPos + 1);
+    arr[i] = createLine(i, charPos, arr[i]);
   }
 
   // Create the lower half part of the diamond
@@ -47,7 +43,7 @@ function buildArray(char) {
 
 
 // Builds an array with spaces only of the proper length/size
-function getDefaultArray(arrLen, lineLen) {
+function createDefaultArray(arrLen, lineLen) {
   var arr = [];
 
   for (var i = 0; i < arrLen; i++) {
@@ -55,6 +51,21 @@ function getDefaultArray(arrLen, lineLen) {
   }
 
   return arr;
+}
+
+
+
+function createLine(lineNumber, charPos, emptyLine) {
+  var ret = emptyLine,
+      tmpChar,
+      tmpCharPos;
+
+  tmpChar = ALPHABET.charAt(lineNumber);
+  tmpCharPos = ALPHABET.indexOf(tmpChar);
+  ret = ret.substr(0, charPos - tmpCharPos) + tmpChar + ret.substr(charPos - tmpCharPos + 1);
+  ret = ret.substr(0, charPos + tmpCharPos) + tmpChar + ret.substr(charPos + tmpCharPos + 1);
+
+  return ret;
 }
 
 
