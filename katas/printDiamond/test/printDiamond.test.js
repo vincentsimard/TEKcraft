@@ -137,36 +137,6 @@
             testLine('E', 4, 'E');
           });
         });
-
-        describe('second line', function() {
-          it('should equal "BB" when all spaces are removed', function() {
-            function testSecondLine(char) {
-              var lines = getLines(char).trim();
-              var noSpaces = lines.map(function (e) { return e.replace(/ /g, ''); });
-              var BB = Array(3).join('B');
-              noSpaces[1].should.equal(BB);
-            }
-
-            testSecondLine('B');
-            testSecondLine('C');
-            testSecondLine('D');
-          });
-        });
-
-        describe('third line', function() {
-          it('should equal "CC" when all spaces are removed', function() {
-            function testThirdLine(char) {
-              var lines = getLines(char).trim();
-              var noSpaces = lines.map(function (e) { return e.replace(/ /g, ''); });
-              var CC = Array(3).join('B');
-              noSpaces[1].should.equal(CC);
-            }
-
-            testThirdLine('C');
-            testThirdLine('D');
-            testThirdLine('E');
-          });
-        });
       });
 
 /*
