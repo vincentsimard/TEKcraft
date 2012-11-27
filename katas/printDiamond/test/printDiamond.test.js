@@ -136,6 +136,18 @@
             testLine('D', 2, 'C');
             testLine('E', 4, 'E');
           });
+
+          it('should have the character positioned properly', function() {
+            var lines = getLines('E');
+
+            lines[1].should.equal('   B B   ');
+            lines[2].should.equal('  C   C  ');
+            lines[3].should.equal(' D     D ');
+            lines[4].should.equal('E       E');
+            lines[5].should.equal(' D     D ');
+            lines[6].should.equal('  C   C  ');
+            lines[7].should.equal('   B B   ');
+          });
         });
       });
 

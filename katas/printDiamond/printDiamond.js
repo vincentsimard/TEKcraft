@@ -23,24 +23,17 @@ function buildArray(char) {
       arrLen = (charPos * 2) + 1,
       lineLen = arrLen,
       arr = [],
-      tmpChar;
+      tmpChar,
+      tmpCharPos;
 
   arr = getDefaultArray(arrLen, lineLen);
 
   // Top part of the diamond
   for (var i = 0; i <= charPos; i++) {
     tmpChar = alphabet.charAt(i);
-    arr[i] = arr[i].substr(0, charPos) + tmpChar + arr[i].substr(charPos+1);
-
-    if (i > 0) {
-      arr[i] = tmpChar + arr[i].substr(1);
-    }
-
-/*
-    if (i === 1) {
-      console.log(arr[i]);
-    }
-*/
+    tmpCharPos = alphabet.indexOf(tmpChar);
+    arr[i] = arr[i].substr(0, charPos - tmpCharPos) + tmpChar + arr[i].substr(charPos - tmpCharPos + 1);
+    arr[i] = arr[i].substr(0, charPos + tmpCharPos) + tmpChar + arr[i].substr(charPos + tmpCharPos + 1);
   }
 
   // Create the lower half part of the diamond
