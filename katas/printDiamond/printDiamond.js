@@ -1,7 +1,5 @@
 'use strict';
 
-
-
 var printDiamond = function(char) {
   var arr = [];
 
@@ -25,13 +23,24 @@ function buildArray(char) {
       arrLen = (charPos * 2) + 1,
       lineLen = arrLen,
       arr = [],
-      index;
+      tmpChar;
 
   arr = getDefaultArray(arrLen, lineLen);
 
   // Top part of the diamond
   for (var i = 0; i <= charPos; i++) {
-    arr[i] = arr[i].substr(0, charPos) + 'A' + arr[i].substr(charPos+1);
+    tmpChar = alphabet.charAt(i);
+    arr[i] = arr[i].substr(0, charPos) + tmpChar + arr[i].substr(charPos+1);
+
+    if (i > 0) {
+      arr[i] = tmpChar + arr[i].substr(1);
+    }
+
+/*
+    if (i === 1) {
+      console.log(arr[i]);
+    }
+*/
   }
 
   // Create the lower half part of the diamond

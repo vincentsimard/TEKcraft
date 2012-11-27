@@ -122,20 +122,50 @@
       });
 
       describe('lines returned that are not the first or last one', function() {
+        describe('each returned line', function() {
+          it('should have the proper character twice', function() {
+            function testLine(char, lineNumber, expectedChar) {
+              var lines = getLines(char).trim();
+              var noSpaces = lines.map(function (e) { return e.replace(/ /g, ''); });
+              var doubledChar = Array(3).join(expectedChar);
+              noSpaces[lineNumber].should.equal(doubledChar);
+            }
+
+            testLine('B', 1, 'B');
+            testLine('F', 1, 'B');
+            testLine('D', 2, 'C');
+            testLine('E', 4, 'E');
+          });
+        });
+
         describe('second line', function() {
-          /*
           it('should equal "BB" when all spaces are removed', function() {
             function testSecondLine(char) {
               var lines = getLines(char).trim();
-              var noSpaces = lines.map(function (e) { return e.replace(' ', ''); });
-              noSpaces[1].should.equal('BB');
+              var noSpaces = lines.map(function (e) { return e.replace(/ /g, ''); });
+              var BB = Array(3).join('B');
+              noSpaces[1].should.equal(BB);
             }
 
             testSecondLine('B');
-            // testSecondLine('C');
-            // testSecondLine('D');
+            testSecondLine('C');
+            testSecondLine('D');
           });
-          */
+        });
+
+        describe('third line', function() {
+          it('should equal "CC" when all spaces are removed', function() {
+            function testThirdLine(char) {
+              var lines = getLines(char).trim();
+              var noSpaces = lines.map(function (e) { return e.replace(/ /g, ''); });
+              var CC = Array(3).join('B');
+              noSpaces[1].should.equal(CC);
+            }
+
+            testThirdLine('C');
+            testThirdLine('D');
+            testThirdLine('E');
+          });
         });
       });
 
