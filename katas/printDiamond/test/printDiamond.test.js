@@ -93,7 +93,6 @@
           testFirstAndLastEqualA('C');
         });
 
-
         it('should only have one character that is not a space', function() {
           function testOnlyOneChar(char) {
             var lines = getLines(char).trim();
@@ -119,6 +118,24 @@
           testCharInTheMiddle('A');
           testCharInTheMiddle('B');
           testCharInTheMiddle('C');
+        });
+      });
+
+      describe('lines returned that are not the first or last one', function() {
+        describe('second line', function() {
+          /*
+          it('should equal "BB" when all spaces are removed', function() {
+            function testSecondLine(char) {
+              var lines = getLines(char).trim();
+              var noSpaces = lines.map(function (e) { return e.replace(' ', ''); });
+              noSpaces[1].should.equal('BB');
+            }
+
+            testSecondLine('B');
+            // testSecondLine('C');
+            // testSecondLine('D');
+          });
+          */
         });
       });
 

@@ -24,14 +24,19 @@ function buildArray(char) {
       charPos = alphabet.indexOf(char),
       arrLen = (charPos * 2) + 1,
       lineLen = arrLen,
-      arr = [];
+      arr = [],
+      index;
 
   arr = getDefaultArray(arrLen, lineLen);
 
-  // Place the letter on the line
-  for (var i = 0; i < arrLen; i++) {
-    // Center the letter
+  // Top part of the diamond
+  for (var i = 0; i <= charPos; i++) {
     arr[i] = arr[i].substr(0, charPos) + 'A' + arr[i].substr(charPos+1);
+  }
+
+  // Create the lower half part of the diamond
+  for (var i = (charPos + 1); i < arrLen; i++) {
+    arr[i] = arr[arrLen - 1 - i];
   }
 
   return arr;
