@@ -2,3 +2,4 @@
 /katas/*/node_modules
 /katas/LEDDisplay/*.js
 /katas/LEDDisplay/test/*.js
+/recordings
