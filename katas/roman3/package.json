@@ -1,0 +1,13 @@
+{
+  "name": "toRoman",
+  "version": "0.0.0",
+  "description": "Integer to Roman number kata",
+  "main": "roman.js",
+  "scripts": {
+    "test": "mocha -R list"
+  },
+  "repository": "",
+  "author": "Vincent Simard",
+  "license": "BSD",
+  "keywords": "kata roman number TEKcraft"
+}
