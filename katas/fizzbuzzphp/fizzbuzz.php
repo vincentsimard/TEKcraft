@@ -1,21 +1,10 @@
 <?php
 
-  function fizzBuzz($number) {
-    $this->number = $number;
-  }
+function fizzBuzz($number) {
+  $return = '';
 
-class User {
-  protected $name;
+  if ($number % 3 === 0) { $return .= 'Fizz'; }
+  if ($number % 5 === 0) { $return .= 'Buzz'; }
 
-  public function getName() {
-    return $this->name;
-  }
-
-  public function setName($name) {
-    $this->name = $name;
-  }
-
-  public function talk() {
-    return "Hello world!";
-  }
+  return ($return === '' ? $number : $return);
 }
