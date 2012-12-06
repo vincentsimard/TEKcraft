@@ -3,3 +3,5 @@
 /katas/LEDDisplay/*.js
 /katas/LEDDisplay/test/*.js
 /recordings
+*.sublime-workspace
+*.sublime-project
