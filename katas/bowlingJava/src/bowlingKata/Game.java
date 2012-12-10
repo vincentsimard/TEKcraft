@@ -9,7 +9,8 @@ public class Game
 	
 	public void roll(Frame frame)
 	{	
-		if (frames.size() > 0) {
+		if (frames.size() > 0)
+		{
 			frames.get(frames.size() - 1).setNextFrame(frame);
 		}
 		
@@ -25,6 +26,7 @@ public class Game
 			Frame currentFrame = frames.get(i);
 			score = score.plus(currentFrame.score());
 		}
+		
 		return score;
 	}
 }

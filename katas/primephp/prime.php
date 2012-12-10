@@ -3,10 +3,10 @@
 function prime($number) {
   $primes = Array();
 
-  for ($nominee = 2; $nominee < $number; $nominee++) {
-    while ($number % $nominee === 0) {
-      array_push($primes, $nominee);
-      $number = $number / $nominee;
+  for ($candidate = 2; $candidate < $number; $candidate++) {
+    while ($number % $candidate === 0) {
+      array_push($primes, $candidate);
+      $number = $number / $candidate;
     }
   }
 

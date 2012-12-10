@@ -46,8 +46,6 @@
           var fnInvalid2 = (function() { new GameOfLife([1, 'a']); });
           var fnInvalid3 = (function() { new GameOfLife({}); });
 
-          var blah = [];
-
           fnValid.should.not.throw(Error);
           fnUndefined.should.not.throw(Error);
           fnInvalid1.should.throw(Error);

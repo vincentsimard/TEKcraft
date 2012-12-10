@@ -24,7 +24,7 @@ public class BowlingKata
 	{
 		assertThat(bowlingGame(new int[][] {{3,2}, {4,5}}), is(new Score(14)));
 	}
-
+	
 	@Test
 	public void strikes_adds_pins_of_next_two_rolls()
 	{
@@ -39,13 +39,19 @@ public class BowlingKata
 		assertThat(bowlingGame(new int[][] {{4,5}, {10, 0}, {10, 0}}), is(new Score(9)));
 	}
 	
+//	@Test
+//	public void should_only_have_to_roll_once_in_frame_when_strike()
+//	{
+//		assertThat(bowlingGame(new int[][] {{10}}), is(new Score(0)));
+//	}
+	
 	private Score bowlingGame(int[][] pinsKnockedDown)
 	{
 		Game game = new Game();
 		
 		for(int i = 0; i < pinsKnockedDown.length; i++)
 		{
-			Frame frame = new Frame(pinsKnockedDown[i][0], pinsKnockedDown[i][1]);
+			Frame frame = Frame.newFrame(new Roll(pinsKnockedDown[i][0]), new Roll(pinsKnockedDown[i][1]));
 			game.roll(frame);
 		}
 		
