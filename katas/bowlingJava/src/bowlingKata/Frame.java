@@ -22,65 +22,17 @@ public abstract class Frame {
 		}
 	}
 	
-	protected Roll getFirstRoll() {
-		return rolls.get(0);
-	}
-
-	protected Roll getSecondRoll() {
-		return rolls.get(1);
-	}
-
-	public Score scoreForTwoRolls() {
-		return new Score(getFirstRoll().nbPins() + getSecondRoll().nbPins());
-	}
-
-	public Score scoreForFirstRoll() {
-		return new Score(getFirstRoll().nbPins());
-	}
-
 	public void setNextFrame(Frame frame) {
-		this.nextFrame = frame;
+		nextFrame = frame;
 	}
 
 	protected boolean hasNextFrame() {
-		return this.nextFrame != null;
-	}
-
-	protected boolean hasNextTwoRolls() {
-		List<Roll> nextRolls = nextRolls();
-		return nextRolls.size() >= 2;
-	}
-
-	protected Score scoreForNextTwoRolls() {
-		Score score = new Score(0);
-		List<Roll> nextRolls = nextRolls();
-	
-		score = score.plus(new Score(nextRolls.get(0).nbPins()));
-		score = score.plus(new Score(nextRolls.get(1).nbPins()));
-		
-		return score;
+		return nextFrame != null;
 	}
 	
-	protected abstract List<Roll> nextRolls();
-
-	protected boolean isStrike() {	
-		return getFirstRoll().allPinsKnockedDown();
+	protected boolean nextFrameIsStrike() {
+		return nextFrame.getClass().equals(StrikeFrame.class);
 	}
 
-	protected abstract Score scoreForStrike();
-
-	public Score score() {
-		Score score = new Score(0);
-	
-		if (isStrike())
-		{
-			score = scoreForStrike();
-		} 
-		else
-		{
-			score = scoreForTwoRolls();
-		}
-		
-		return score;
-	}
+	protected abstract Score score();
 }

@@ -16,11 +16,11 @@ public class Roll
 	
 	public int nbPins()
 	{
-		return this.pins;
+		return pins;
 	}
 	
 	public boolean allPinsKnockedDown()
 	{
-		return this.pins == 10;
+		return pins == 10;
 	}
 }

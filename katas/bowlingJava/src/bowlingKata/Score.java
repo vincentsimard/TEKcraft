@@ -5,6 +5,11 @@ public class Score
 
 	private int value;
 
+	public Score()
+	{
+		this.value = 0;
+	}
+	
 	public Score(int value)
 	{
 		this.value = value;

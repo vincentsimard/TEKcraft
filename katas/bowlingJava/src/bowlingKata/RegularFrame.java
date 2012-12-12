@@ -1,8 +1,5 @@
 package bowlingKata;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class RegularFrame extends Frame
 {	
 	public RegularFrame(Roll firstRoll, Roll secondRoll)
@@ -10,33 +7,8 @@ public class RegularFrame extends Frame
 		super(firstRoll, secondRoll);
 	}
 
-	protected Score scoreForStrike()
+	protected Score score()
 	{
-		Score score = new Score(0);
-		
-		if (hasNextTwoRolls()) {
-			score = new Score(10);
-			score = score.plus(scoreForNextTwoRolls());
-		}
-		
-		return score;
-	}
-
-	protected List<Roll> nextRolls() {
-		List<Roll> nextRolls = new ArrayList<Roll>();
-		
-		if (hasNextFrame()) {
-			if (this.nextFrame.isStrike()) {
-				nextRolls.add(this.nextFrame.getFirstRoll());
-				if (this.nextFrame.hasNextFrame()) {
-					nextRolls.add(this.nextFrame.nextFrame.getFirstRoll());
-				}
-			} else {
-				nextRolls.add(this.nextFrame.getFirstRoll());
-				nextRolls.add(this.nextFrame.getSecondRoll());
-			}
-		}
-		
-		return nextRolls;
+		return new Score(rolls.get(0).nbPins() + rolls.get(1).nbPins());
 	}
 }

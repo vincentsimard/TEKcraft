@@ -3,41 +3,57 @@ package bowlingKata;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StrikeFrame extends Frame {
+public class StrikeFrame extends Frame
+{
 
-	public StrikeFrame() {
+	public StrikeFrame()
+	{
 		super(new Roll(10), new Roll(0));
 	}
 
-	@Override
-	protected List<Roll> nextRolls() {
+	protected Score score()
+	{
+		if (!hasNextTwoRolls()) { return new Score(); }
+		return new Score(10).plus(scoreForNextTwoRolls());
+	}
+	
+	private List<Roll> nextRolls()
+	{
 		List<Roll> nextRolls = new ArrayList<Roll>();
 		
-		if (hasNextFrame()) {
-			if (this.nextFrame.isStrike()) {
-				nextRolls.add(this.nextFrame.getFirstRoll());
-				if (this.nextFrame.hasNextFrame()) {
-					nextRolls.add(this.nextFrame.nextFrame.getFirstRoll());
-				}
-			} else {
-				nextRolls.add(this.nextFrame.getFirstRoll());
-				nextRolls.add(this.nextFrame.getSecondRoll());
+		if (!hasNextFrame()) { return nextRolls; }
+		
+		nextRolls.add(nextFrame.rolls.get(0));
+		
+		if (nextFrameIsStrike())
+		{
+			if (nextFrame.hasNextFrame())
+			{
+				nextRolls.add(nextFrame.nextFrame.rolls.get(0));
 			}
+		}
+		else
+		{
+			nextRolls.add(nextFrame.rolls.get(1));
 		}
 		
 		return nextRolls;
 	}
 
-	@Override
-	protected Score scoreForStrike() {
-		Score score = new Score(0);
-		
-		if (hasNextTwoRolls()) {
-			score = new Score(10);
-			score = score.plus(scoreForNextTwoRolls());
-		}
+	private boolean hasNextTwoRolls()
+	{
+		List<Roll> nextRolls = nextRolls();
+		return nextRolls.size() >= 2;
+	}
+
+	private Score scoreForNextTwoRolls()
+	{
+		Score score = new Score();
+		List<Roll> nextRolls = nextRolls();
+	
+		score = score.plus(new Score(nextRolls.get(0).nbPins()));
+		score = score.plus(new Score(nextRolls.get(1).nbPins()));
 		
 		return score;
 	}
-
 }
