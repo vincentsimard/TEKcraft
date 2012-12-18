@@ -61,5 +61,5 @@ class RomanTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(toArabic('MMMMDCCXXXII'), 4732);
     $this->assertEquals(toArabic('MCMXLIV'), 1944);
     $this->assertEquals(toArabic('MMCCCXLV'), 2345);
-  }  
+  }
 }

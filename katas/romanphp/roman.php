@@ -2,7 +2,7 @@
 
 function toArabic($roman) {
   $result = 0;
-  
+
   $addSymbols = array(
     'M' => 1000,
     'D' => 500,
