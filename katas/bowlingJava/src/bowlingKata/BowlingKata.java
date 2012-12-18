@@ -28,6 +28,7 @@ public class BowlingKata
 	@Test
 	public void strikesAddNextTwoRolls()
 	{
+		assertThat(bowlingGame(new int[][] {{10,0}, {0,0}}), is(new Score(10)));
 		assertThat(bowlingGame(new int[][] {{10,0}, {4,5}}), is(new Score(28)));
 		assertThat(bowlingGame(new int[][] {{10,0}, {10,0}, {4,5}}), is(new Score(52)));
 	}

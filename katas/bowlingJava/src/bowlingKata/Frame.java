@@ -23,13 +23,17 @@ public abstract class Frame {
 	}
 	
 	public void setNextFrame(Frame frame) {
-		nextFrame = frame;
+		this.nextFrame = frame;
 	}
 
 	protected boolean hasNextFrame() {
 		return nextFrame != null;
 	}
 	
+	public String toString() {
+		return "Frame [rolls=[" + Integer.toString(rolls.get(0).nbPins()) + "," + Integer.toString(rolls.get(1).nbPins()) + "]]";
+	}
+
 	protected boolean nextFrameIsStrike() {
 		return nextFrame.getClass().equals(StrikeFrame.class);
 	}

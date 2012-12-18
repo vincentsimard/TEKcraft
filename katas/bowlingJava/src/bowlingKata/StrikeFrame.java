@@ -13,13 +13,16 @@ public class StrikeFrame extends Frame
 
 	protected Score score()
 	{
+		// The frame cannot be scored if two rolls have not been rolled
 		if (!hasNextTwoRolls()) { return new Score(); }
+		
 		return new Score(10).plus(scoreForNextTwoRolls());
 	}
 	
 	private List<Roll> nextRolls()
 	{
 		List<Roll> nextRolls = new ArrayList<Roll>();
+		Frame currentFrame = this;
 		
 		if (!hasNextFrame()) { return nextRolls; }
 		
