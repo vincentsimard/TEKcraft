@@ -1,25 +1,31 @@
 (function () {
   'use strict';
 
+  var GAME_PTS = [0, 15, 30, 40];
+
   var Tennis = function() {
-    this.player1score = 0;
-    this.player2score = 0;
+    this.score = [0,0];
   };
 
-  Tennis.prototype.winExchange = function(playerName) {
-    if (this[playerName + 'score'] === 30) {
-      this[playerName + 'score'] += 10;
-    } else if (this.isDeuce()) {
-      this[playerName + 'score'] = 'advantage';
-    } else {
-      this[playerName + 'score'] += 15;
+  Tennis.prototype.addPointToPlayer = function(player) {
+    var index;
+
+    if (this.isDeuce()) {
+      this.score[player] = 'adv';
+      return this;
     }
+
+    index = GAME_PTS.indexOf(this.score[player]);
+    this.score[player] = GAME_PTS[index + 1];
 
     return this;
   };
 
+  Tennis.prototype.player1Score = function() { return this.score[0]; };
+  Tennis.prototype.player2Score = function() { return this.score[1]; };
+
   Tennis.prototype.isDeuce = function() {
-    return this['player1score'] == 40 && this['player2score'] == 40;
+    return this.player1Score() === 40 && this.player2Score() === 40;
   };
 
   module.exports.Tennis = Tennis;
