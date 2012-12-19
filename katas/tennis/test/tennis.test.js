@@ -13,24 +13,24 @@
 
     describe('players score', function() {
       it('should be zero at the start of the game', function() {
-        var game = new Tennis('Vincent', 'Frank');
-        game.Vincentscore.should.equal(0);
-        game.Frankscore.should.equal(0);
+        var game = new Tennis();
+        game.player1score.should.equal(0);
+        game.player2score.should.equal(0);
       });
 
       it('should be 15 when a player scores once', function() {
-        var game = new Tennis('Daniel', 'Claude');
-        game.winExchange('Claude');
-        game.Claudescore.should.equal(15);
+        var game = new Tennis();
+        game.winExchange('player2');
+        game.player2score.should.equal(15);
       });
 
       it('should be 15 when both players score once', function() {
-        var game = new Tennis('Jude', 'Anna');
+        var game = new Tennis();
         game
-          .winExchange('Anna')
-          .winExchange('Jude');
-        game.Annascore.should.equal(15);
-        game.Judescore.should.equal(15);
+          .winExchange('player1')
+          .winExchange('player2');
+        game.player1score.should.equal(15);
+        game.player1score.should.equal(15);
       });
 
       it('should be 30 when a player scores twice', function() {
