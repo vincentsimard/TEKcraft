@@ -24,7 +24,9 @@
       }
     };
 
-    var simulateDeuce = function() {}
+    var simulateDeuce = function() {
+      simulateExchanges(1,1,1,2,2,2);
+    };
 
     it('should be defined', function() {
       Game.should.not.be.undefined;
@@ -47,14 +49,15 @@
       });
 
       it('should not be game point if both players have won 3 exchanges', function() {
-        simulateExchanges(2,2,2,1,1,1);
+        simulateDeuce();
         game._isGamePoint().should.be.false;
         game._isGamePointFor(0).should.be.false;
         game._isGamePointFor(1).should.be.false;
       });
 
       it('should be game point if a player wins an exchange when it is deuce', function() {
-        simulateExchanges(2,2,2,1,1,1,2);
+        simulateDeuce();
+        simulateExchanges(2);
         game._isGamePoint().should.be.true;
         game._isGamePointFor(0).should.be.false;
         game._isGamePointFor(1).should.be.true;
@@ -93,24 +96,26 @@
         });
 
         it('should be 40:40 when both players win three exchanges', function(){
-          simulateExchanges(1,1,1,2,2,2);
+          simulateDeuce();
           assertScore(40,40);
         });
       });
 
       describe('(advantages)', function() {
         it('should be adv:40 when the score is 40:40 and a wins an exchange', function() {
-          simulateExchanges(1,1,1,2,2,2,1);
+          simulateDeuce();
+          simulateExchanges(1);
           assertScore('adv', 40);
         });
 
         it('should go back to 40:40 when a player having the advantage loses an exchange', function() {
-          simulateExchanges(1,1,1,2,2,2,1,2);
+          simulateDeuce();
+          simulateExchanges(1,2);
           assertScore(40,40);
         });
 
         it('should go back to 40:40 after a ridiculously long game where both players win exchanges back and forth', function() {
-          simulateExchanges(1,1,1,2,2,2);
+          simulateDeuce();
           for (var i=0; i < 20; i++) {
             simulateExchanges(1,2);
           }
@@ -120,7 +125,6 @@
       
       describe('(wins)', function() {
         it('should declare a player has won if he wins 4 straight exchanges', function() {
-          game = new Game();
           simulateExchanges(1,1,1,1);
           assertScore('win',0);
 
@@ -130,12 +134,12 @@
         });
 
         it('should declare a player has won if he wins an exchange when he has the advantage', function() {
-          simulateExchanges(1,1,1,2,2,2,2,2);
+          simulateDeuce();
+          simulateExchanges(2,2);
           assertScore(40, 'win');
         });
 
         it('should throw an error if players try to play when the game has already been won', function() {
-          game = new Game();
           simulateExchanges(1,1,1,1);
 
           var fnInvalidExchange = (function() {
@@ -145,11 +149,8 @@
           fnInvalidExchange.should.throw(Error);
 
           game = new Game();
-          simulateExchanges(1,2,1,2,1,2,1,2,1,1);
-
-          var fnInvalidExchange = (function() {
-            simulateExchanges(1);
-          });
+          simulateDeuce();
+          simulateExchanges(1,2,1,1);
 
           fnInvalidExchange.should.throw(Error);
         });
