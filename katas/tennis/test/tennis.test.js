@@ -24,6 +24,8 @@
       }
     };
 
+    var simulateDeuce = function() {}
+
     it('should be defined', function() {
       Game.should.not.be.undefined;
     });
@@ -31,31 +33,31 @@
     describe('game point', function() {
       it('should not be game point if a player wins at less than 3 exchanges', function() {
         simulateExchanges(1);
-        game.isGamePoint().should.be.false;
+        game._isGamePoint().should.be.false;
 
         simulateExchanges(1);
-        game.isGamePoint().should.be.false;
+        game._isGamePoint().should.be.false;
       });
 
       it('should be game point if a player wins at least 3 exchanges and the other player has won at least 1 less exchanges', function() {
         simulateExchanges(2,2,2);
-        game.isGamePoint().should.be.true;
-        game.isGamePointFor(0).should.be.false;
-        game.isGamePointFor(1).should.be.true;
+        game._isGamePoint().should.be.true;
+        game._isGamePointFor(0).should.be.false;
+        game._isGamePointFor(1).should.be.true;
       });
 
       it('should not be game point if both players have won 3 exchanges', function() {
         simulateExchanges(2,2,2,1,1,1);
-        game.isGamePoint().should.be.false;
-        game.isGamePointFor(0).should.be.false;
-        game.isGamePointFor(1).should.be.false;
+        game._isGamePoint().should.be.false;
+        game._isGamePointFor(0).should.be.false;
+        game._isGamePointFor(1).should.be.false;
       });
 
       it('should be game point if a player wins an exchange when it is deuce', function() {
         simulateExchanges(2,2,2,1,1,1,2);
-        game.isGamePoint().should.be.true;
-        game.isGamePointFor(0).should.be.false;
-        game.isGamePointFor(1).should.be.true;
+        game._isGamePoint().should.be.true;
+        game._isGamePointFor(0).should.be.false;
+        game._isGamePointFor(1).should.be.true;
       });
     });
 
