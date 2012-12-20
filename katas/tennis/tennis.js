@@ -1,15 +1,17 @@
 (function () {
   'use strict';
 
+  var Tennis = Tennis || {};
+
   var GAME_PTS = [0, 15, 30, 40];
   var PLAYER_1 = 0;
   var PLAYER_2 = 1;
 
-  var Tennis = function() {
+  Tennis.Game = function() {
     this.score = [GAME_PTS[0],GAME_PTS[0]];
   };
 
-  Tennis.prototype.addPointToPlayer = function(player) {
+  Tennis.Game.prototype.addPointToPlayer = function(player) {
     var score = this.score[player];
     var index = GAME_PTS.indexOf(score);
 
@@ -35,25 +37,25 @@
     return this;
   };
 
-  Tennis.prototype.player1WinsExchange = function() { return this.addPointToPlayer(PLAYER_1); };
-  Tennis.prototype.player2WinsExchange = function() { return this.addPointToPlayer(PLAYER_2); };
+  Tennis.Game.prototype.player1WinsExchange = function() { return this.addPointToPlayer(PLAYER_1); };
+  Tennis.Game.prototype.player2WinsExchange = function() { return this.addPointToPlayer(PLAYER_2); };
 
-  Tennis.prototype.player1Score = function() { return this.score[PLAYER_1]; };
-  Tennis.prototype.player2Score = function() { return this.score[PLAYER_2]; };
+  Tennis.Game.prototype.player1Score = function() { return this.score[PLAYER_1]; };
+  Tennis.Game.prototype.player2Score = function() { return this.score[PLAYER_2]; };
 
-  Tennis.prototype.isLastPoint = function(score) {
+  Tennis.Game.prototype.isLastPoint = function(score) {
     var lastPoint = GAME_PTS[GAME_PTS.length - 1];
     return score === lastPoint;
   };
 
-  Tennis.prototype.isGamePoint = function() {
+  Tennis.Game.prototype.isGamePoint = function() {
     return (
       this.isGamePointFor(PLAYER_1) ||
       this.isGamePointFor(PLAYER_2)
     );
   };
 
-  Tennis.prototype.isGamePointFor = function(player) {
+  Tennis.Game.prototype.isGamePointFor = function(player) {
     var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
 
     var score = this['player' + (player + 1) + 'Score']();
@@ -68,14 +70,14 @@
     );
   };
 
-  Tennis.prototype.isDeuce = function() {
+  Tennis.Game.prototype.isDeuce = function() {
     return (
       this.isLastPoint(this.player1Score()) &&
       this.isLastPoint(this.player2Score())
     );
   };
 
-  Tennis.prototype.isOver = function() {
+  Tennis.Game.prototype.isOver = function() {
     return (
       this.player1Score() === 'win' ||
       this.player2Score() === 'win'

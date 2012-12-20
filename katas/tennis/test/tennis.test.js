@@ -4,13 +4,13 @@
   var chai = require('chai');
   var should = chai.should();
 
-  var Tennis = require('./../Tennis').Tennis;
+  var Game = require('./../Tennis').Tennis.Game;
 
-  describe('Tennis', function() {
+  describe('TennisGame', function() {
     var game;
 
     beforeEach(function(done) {
-      game = new Tennis();
+      game = new Game();
       done();
     });
 
@@ -25,7 +25,7 @@
     };
 
     it('should be defined', function() {
-      Tennis.should.not.be.undefined;
+      Game.should.not.be.undefined;
     });
 
     describe('game point', function() {
@@ -118,11 +118,11 @@
       
       describe('(wins)', function() {
         it('should declare a player wins if he wins 4 straight exchanges', function() {
-          game = new Tennis();
+          game = new Game();
           simulateExchanges(1,1,1,1);
           assertScore('win',0);
 
-          game = new Tennis();
+          game = new Game();
           simulateExchanges(2,2,2,2);
           assertScore(0,'win');
         });
