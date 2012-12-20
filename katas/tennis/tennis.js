@@ -6,18 +6,16 @@
   var PLAYER_2 = 1;
 
   var Tennis = function() {
-    this.score = [0,0];
+    this.score = [GAME_PTS[0],GAME_PTS[0]];
   };
 
   Tennis.prototype.addPointToPlayer = function(player) {
     var index = GAME_PTS.indexOf(this.score[player]);
 
-    if (this.isLastPoint(this.score[player])) {
-      if (this.isDeuce()) {
-        this.score[player] = 'adv';
-      } else {
-        // @TODO: playerWinsGame();
-      }
+    if (this.isDeuce()) {
+      this.score[player] = 'adv';
+    } else if (this.isGamePointFor(player)) {
+      // Player wins
     } else {
       this.score[player] = GAME_PTS[index + 1];
     }
@@ -34,6 +32,27 @@
   Tennis.prototype.isLastPoint = function(score) {
     var lastPoint = GAME_PTS[GAME_PTS.length - 1];
     return score === lastPoint;
+  };
+
+  Tennis.prototype.isGamePoint = function() {
+    return (
+      this.isGamePointFor(PLAYER_1) ||
+      this.isGamePointFor(PLAYER_2)
+    );
+  };
+
+  Tennis.prototype.isGamePointFor = function(player) {
+    var lastPoint = GAME_PTS[GAME_PTS.length - 1];
+
+    var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+
+    var score = this['player' + (player + 1) + 'Score']();
+    var otherScore = this['player' + (otherPlayer + 1) + 'Score']();
+
+    return (
+      this.isLastPoint(score) &&
+      !this.isLastPoint(otherScore)
+    );
   };
 
   Tennis.prototype.isDeuce = function() {

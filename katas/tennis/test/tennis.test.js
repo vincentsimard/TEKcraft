@@ -7,33 +7,51 @@
   var Tennis = require('./../Tennis').Tennis;
 
   describe('Tennis', function() {
+    var game;
+
+    beforeEach(function(done) {
+      game = new Tennis();
+      done();
+    });
+
+    var simulateExchanges = function() {
+      var exchanges = Array.prototype.slice.call(arguments, 0);
+      var winner;
+
+      for (var i=0; i < exchanges.length; i++) {
+        winner = exchanges[i];
+        game['player'+winner+'WinsExchange']();
+      }
+    };
+
     it('should be defined', function() {
       Tennis.should.not.be.undefined;
     });
 
-    // @TODO: Add the concept of game/set/match to distinguish different scores
+    describe('gamePoint', function() {
+      it('should not be game point if a player wins at less than 3 exchanges', function() {
+        simulateExchanges(1);
+        game.isGamePoint().should.be.false;
 
-    describe('players score', function() {
-      var game;
-
-      beforeEach(function(done) {
-        game = new Tennis();
-        done();
+        simulateExchanges(1);
+        game.isGamePoint().should.be.false;
       });
 
+      it('should be game point if a player wins at least 3 exchanges and the other player has won at least 1 less exchanges', function() {
+        simulateExchanges(2,2,2);
+        game.isGamePoint().should.be.true;
+      });
+
+      it('should not be game point if both players have won 3 exchanges', function() {
+        simulateExchanges(2,2,2,1,1,1);
+        game.isGamePoint().should.be.false;
+      });
+    });
+
+    describe('score', function() {
       var assertScore = function(score1, score2) {
         game.player1Score().should.equal(score1);
         game.player2Score().should.equal(score2);
-      };
-
-      var simulateExchanges = function() {
-        var exchanges = Array.prototype.slice.call(arguments, 0);
-        var winner;
-
-        for (var i=0; i < exchanges.length; i++) {
-          winner = exchanges[i];
-          game['player'+winner+'WinsExchange']();
-        }
       };
 
       it('should be zero at the start of the game', function() {
