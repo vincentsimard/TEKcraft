@@ -10,12 +10,24 @@
   };
 
   Tennis.prototype.addPointToPlayer = function(player) {
-    var index = GAME_PTS.indexOf(this.score[player]);
+    var score = this.score[player];
+    var index = GAME_PTS.indexOf(score);
+
+    if (this.isOver()) { throw new Error(); }
 
     if (this.isDeuce()) {
       this.score[player] = 'adv';
-    } else if (this.isGamePointFor(player)) {
-      // Player wins
+    } else if (this.isGamePoint()) {
+      // Win
+      if (this.isGamePointFor(player)) {
+        this.score[player] = 'win';
+      // Back to deuce
+      } else if (this.player1Score() === 'adv' || this.player2Score() === 'adv') {
+        this.score[PLAYER_1] = GAME_PTS[GAME_PTS.length - 1];
+        this.score[PLAYER_2] = GAME_PTS[GAME_PTS.length - 1];
+      } else {
+        this.score[player] = GAME_PTS[index + 1];
+      }
     } else {
       this.score[player] = GAME_PTS[index + 1];
     }
@@ -42,16 +54,17 @@
   };
 
   Tennis.prototype.isGamePointFor = function(player) {
-    var lastPoint = GAME_PTS[GAME_PTS.length - 1];
-
     var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
 
     var score = this['player' + (player + 1) + 'Score']();
     var otherScore = this['player' + (otherPlayer + 1) + 'Score']();
 
     return (
-      this.isLastPoint(score) &&
-      !this.isLastPoint(otherScore)
+      score === 'adv' || (
+        this.isLastPoint(score) &&
+        !this.isLastPoint(otherScore) &&
+        otherScore !== 'adv'
+      )
     );
   };
 
@@ -59,6 +72,13 @@
     return (
       this.isLastPoint(this.player1Score()) &&
       this.isLastPoint(this.player2Score())
+    );
+  };
+
+  Tennis.prototype.isOver = function() {
+    return (
+      this.player1Score() === 'win' ||
+      this.player2Score() === 'win'
     );
   };
 
