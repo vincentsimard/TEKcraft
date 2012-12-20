@@ -117,7 +117,7 @@
       });
       
       describe('(wins)', function() {
-        it('should declare a player wins if he wins 4 straight exchanges', function() {
+        it('should declare a player has won if he wins 4 straight exchanges', function() {
           game = new Game();
           simulateExchanges(1,1,1,1);
           assertScore('win',0);
@@ -127,13 +127,23 @@
           assertScore(0,'win');
         });
 
-        it('should declare a player wins if he wins an exchange when he has the advantage', function() {
+        it('should declare a player has won if he wins an exchange when he has the advantage', function() {
           simulateExchanges(1,1,1,2,2,2,2,2);
           assertScore(40, 'win');
         });
 
         it('should throw an error if players try to play when the game has already been won', function() {
+          game = new Game();
           simulateExchanges(1,1,1,1);
+
+          var fnInvalidExchange = (function() {
+            simulateExchanges(1);
+          });
+
+          fnInvalidExchange.should.throw(Error);
+
+          game = new Game();
+          simulateExchanges(1,2,1,2,1,2,1,2,1,1);
 
           var fnInvalidExchange = (function() {
             simulateExchanges(1);

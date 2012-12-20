@@ -3,17 +3,17 @@
 
   var Tennis = Tennis || {};
 
-  var GAME_PTS = [0, 15, 30, 40];
+  var PTS = [0, 15, 30, 40];
   var PLAYER_1 = 0;
   var PLAYER_2 = 1;
 
   Tennis.Game = function() {
-    this.score = [GAME_PTS[0],GAME_PTS[0]];
+    this.score = [PTS[0],PTS[0]];
   };
 
   Tennis.Game.prototype.addPointToPlayer = function(player) {
     var score = this.score[player];
-    var index = GAME_PTS.indexOf(score);
+    var index = PTS.indexOf(score);
 
     if (this.isOver()) { throw new Error(); }
 
@@ -25,13 +25,13 @@
         this.score[player] = 'win';
       // Back to deuce
       } else if (this.player1Score() === 'adv' || this.player2Score() === 'adv') {
-        this.score[PLAYER_1] = GAME_PTS[GAME_PTS.length - 1];
-        this.score[PLAYER_2] = GAME_PTS[GAME_PTS.length - 1];
+        this.score[PLAYER_1] = PTS[PTS.length - 1];
+        this.score[PLAYER_2] = PTS[PTS.length - 1];
       } else {
-        this.score[player] = GAME_PTS[index + 1];
+        this.score[player] = PTS[index + 1];
       }
     } else {
-      this.score[player] = GAME_PTS[index + 1];
+      this.score[player] = PTS[index + 1];
     }
 
     return this;
@@ -42,11 +42,6 @@
 
   Tennis.Game.prototype.player1Score = function() { return this.score[PLAYER_1]; };
   Tennis.Game.prototype.player2Score = function() { return this.score[PLAYER_2]; };
-
-  Tennis.Game.prototype.isLastPoint = function(score) {
-    var lastPoint = GAME_PTS[GAME_PTS.length - 1];
-    return score === lastPoint;
-  };
 
   Tennis.Game.prototype.isGamePoint = function() {
     return (
@@ -62,12 +57,21 @@
     var otherScore = this['player' + (otherPlayer + 1) + 'Score']();
 
     return (
-      score === 'adv' || (
+      this.isAdvantage(score) || (
         this.isLastPoint(score) &&
         !this.isLastPoint(otherScore) &&
-        otherScore !== 'adv'
+        !this.isAdvantage(otherScore)
       )
     );
+  };
+
+  Tennis.Game.prototype.isLastPoint = function(score) {
+    var lastPoint = PTS[PTS.length - 1];
+    return score === lastPoint;
+  };
+
+  Tennis.Game.prototype.isAdvantage = function(score) {
+    return score === 'adv';
   };
 
   Tennis.Game.prototype.isDeuce = function() {
