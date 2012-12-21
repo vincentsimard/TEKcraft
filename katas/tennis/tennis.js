@@ -6,7 +6,7 @@
   Tennis.Game = function() {
     var PTS = [0, 15, 30, 40];
 
-    var LAST_INDEX = PTS.length - 1;
+    var LAST_POINT = PTS.indexOf(40);
 
     var PLAYER_1 = 0;
     var PLAYER_2 = 1;
@@ -47,11 +47,11 @@
     };
 
     var isLastIndex = function(index) {
-      return index === LAST_INDEX;
+      return index === LAST_POINT;
     };
 
     var isAdvantage = function(index) {
-      return index === (LAST_INDEX + 1);
+      return index === (LAST_POINT + 1);
     };
 
     var isDeuce = function() {
@@ -80,11 +80,11 @@
     var translatePoint = function(index) {
       var pts = PTS[index];
 
-      if (index > LAST_INDEX) {
-        if (Math.abs(score[0] - score[1]) <= 1) {
-          pts = 'adv';
-        } else {
+      if (index > LAST_POINT) {
+        if (Math.abs(score[0] - score[1]) > 1) {
           pts = 'win';
+        } else {
+          pts = 'adv';
         }
       }
 
