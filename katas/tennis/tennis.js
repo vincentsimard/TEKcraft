@@ -3,89 +3,101 @@
 
   var Tennis = Tennis || {};
 
-  var PTS = [0, 15, 30, 40];
-  var PLAYER_1 = 0;
-  var PLAYER_2 = 1;
-
   Tennis.Game = function() {
-    this.score = [PTS[0],PTS[0]];
-  };
+    var PTS = [0, 15, 30, 40];
+    var PLAYER_1 = 0;
+    var PLAYER_2 = 1;
 
-  Tennis.Game.prototype.addPointToPlayer = function(player) {
-    var score = this.score[player];
-    var index = PTS.indexOf(score);
-    var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+    var score = [PTS[0],PTS[0]];
 
-    if (this.isOver()) { throw new Error(); }
+    var addPointToPlayer = function(player) {
+      var index = PTS.indexOf(score[player]);
+      var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
 
-    if (this._isDeuce()) {
-      this.score[player] = 'adv';
-    } else if (this._isGamePoint()) {
-      // Win
-      if (this._isGamePointFor(player)) {
-        this.score[player] = 'win';
-      // Back to deuce
-      } else if (this._isAdvantage(this.score[otherPlayer])) {
-        this.score[otherPlayer] = PTS[PTS.length - 1];
+      if (isOver()) { throw new Error(); }
+
+      if (isGamePoint()) {
+        // Win
+        if (isGamePointFor(player)) {
+          score[player] = 'win';
+        // Back to deuce
+        } else if (isAdvantage(score[otherPlayer])) {
+          score[otherPlayer] = PTS[PTS.length - 1];
+        } else {
+          score[player] = PTS[index + 1];
+        }
+      } else if (isDeuce()) {
+        score[player] = 'adv';
       } else {
-        this.score[player] = PTS[index + 1];
+        score[player] = PTS[index + 1];
       }
-    } else {
-      this.score[player] = PTS[index + 1];
-    }
 
-    return this;
-  };
+      return this;
+    };
 
-  Tennis.Game.prototype.player1WinsExchange = function() { return this.addPointToPlayer(PLAYER_1); };
-  Tennis.Game.prototype.player2WinsExchange = function() { return this.addPointToPlayer(PLAYER_2); };
+    var isGamePoint = function() {
+      return isGamePointForPlayer1() || isGamePointForPlayer2();
+    };
 
-  Tennis.Game.prototype.player1Score = function() { return this.score[PLAYER_1]; };
-  Tennis.Game.prototype.player2Score = function() { return this.score[PLAYER_2]; };
+    var isGamePointFor = function(player) {
+      var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+      var score1 = score[player];
+      var score2 = score[otherPlayer];
 
-  Tennis.Game.prototype.isOver = function() {
-    return (
-      this.player1Score() === 'win' ||
-      this.player2Score() === 'win'
-    );
-  };
+      return (
+        isAdvantage(score1) || (
+          isLastPoint(score1) &&
+          !isLastPoint(score2) &&
+          !isAdvantage(score2)
+        )
+      );
+    };
 
-  Tennis.Game.prototype._isGamePoint = function() {
-    return (
-      this._isGamePointFor(PLAYER_1) ||
-      this._isGamePointFor(PLAYER_2)
-    );
-  };
+    var isLastPoint = function(playerScore) {
+      var lastPoint = PTS[PTS.length - 1];
+      return playerScore === lastPoint;
+    };
 
-  Tennis.Game.prototype._isGamePointFor = function(player) {
-    var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+    var isAdvantage = function(playerScore) {
+      return playerScore === 'adv';
+    };
 
-    var score = this['player' + (player + 1) + 'Score']();
-    var otherScore = this['player' + (otherPlayer + 1) + 'Score']();
+    var isDeuce = function() {
+      return (
+        isLastPoint(score[PLAYER_1]) &&
+        isLastPoint(score[PLAYER_2])
+      );
+    };
 
-    return (
-      this._isAdvantage(score) || (
-        this._isLastPoint(score) &&
-        !this._isLastPoint(otherScore) &&
-        !this._isAdvantage(otherScore)
-      )
-    );
-  };
+    var player1WinsExchange = function() { return addPointToPlayer(PLAYER_1); };
+    var player2WinsExchange = function() { return addPointToPlayer(PLAYER_2); };
 
-  Tennis.Game.prototype._isLastPoint = function(score) {
-    var lastPoint = PTS[PTS.length - 1];
-    return score === lastPoint;
-  };
+    var player1Score = function() { return score[PLAYER_1]; };
+    var player2Score = function() { return score[PLAYER_2]; };
 
-  Tennis.Game.prototype._isAdvantage = function(score) {
-    return score === 'adv';
-  };
+    var isGamePointForPlayer1 = function() { return isGamePointFor(PLAYER_1); };
+    var isGamePointForPlayer2 = function() { return isGamePointFor(PLAYER_2); };
 
-  Tennis.Game.prototype._isDeuce = function() {
-    return (
-      this._isLastPoint(this.score[PLAYER_1]) &&
-      this._isLastPoint(this.score[PLAYER_2])
-    );
+    var isOver = function() {
+      return (
+        player1Score() === 'win' ||
+        player2Score() === 'win'
+      );
+    };
+
+    return {
+      player1WinsExchange: player1WinsExchange,
+      player2WinsExchange: player2WinsExchange,
+
+      player1Score: player1Score,
+      player2Score: player2Score,
+
+      isOver: isOver,
+
+      isGamePoint: isGamePoint,
+      isGamePointForPlayer1: isGamePointForPlayer1,
+      isGamePointForPlayer2: isGamePointForPlayer2
+    };
   };
 
   module.exports.Tennis = Tennis;
