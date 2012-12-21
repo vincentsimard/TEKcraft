@@ -64,7 +64,7 @@
       });
     });
 
-    describe('score', function() {
+    describe('scoring', function() {
       var assertScore = function(score1, score2) {
         game.player1Score().should.equal(score1);
         game.player2Score().should.equal(score2);
@@ -154,6 +154,51 @@
 
           fnInvalidExchange.should.throw(Error);
         });
+      });
+    });
+
+    describe('score()', function() {
+      it('should translate 0, 15, 30, 40', function() {
+        simulateExchanges(1);
+        game.score().should.equal('fifteen, love');
+
+        simulateExchanges(1);
+        game.score().should.equal('thirty, love');
+
+        simulateExchanges(1);
+        game.score().should.equal('forty, love');
+      });
+
+      it('should use "all" for equal scores', function() {
+        game.score().should.equal('love all');
+
+        simulateExchanges(1,2)
+        game.score().should.equal('fifteen all');
+
+        simulateExchanges(1,2)
+        game.score().should.equal('thirty all');
+      });
+
+      it('should translate deuce', function() {
+        simulateExchanges(1,1,1,2,2,2);
+        game.score().should.equal('deuce');
+      });
+
+      it('should use "advantage #{PLAYER}" for advantages', function() {
+        simulateExchanges(1,1,1,2,2,2,1);
+        game.score().should.equal('advantage Player 1');
+
+        simulateExchanges(2,2);
+        game.score().should.equal('advantage Player 2');
+      });
+
+      it('should use "game #{PLAYER}" for won game', function() {
+        simulateExchanges(1,1,1,1);
+        game.score().should.equal('game Player 1');
+
+        game = new Game();
+        simulateExchanges(2,2,2,2);
+        game.score().should.equal('game Player 2');
       });
     });
   });
