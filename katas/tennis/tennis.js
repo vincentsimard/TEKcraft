@@ -5,32 +5,29 @@
 
   Tennis.Game = function() {
     var PTS = [0, 15, 30, 40];
+
+    var LAST_INDEX = PTS.length - 1;
+
     var PLAYER_1 = 0;
     var PLAYER_2 = 1;
 
-    var score = [PTS[0],PTS[0]];
+    var score = [0,0];
 
     var addPointToPlayer = function(player) {
-      var index = PTS.indexOf(score[player]);
       var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
 
       if (isOver()) { throw new Error(); }
 
-      if (isGamePoint()) {
-        // Win
-        if (isGamePointFor(player)) {
-          score[player] = 'win';
-        // Back to deuce
-        } else if (isAdvantage(score[otherPlayer])) {
-          score[otherPlayer] = PTS[PTS.length - 1];
-        } else {
-          score[player] = PTS[index + 1];
+      if (isGamePointFor(otherPlayer)) {
+        if (isAdvantage(score[otherPlayer])) {
+          // Going back to 40:40
+          // Removing the point that is awarded to the player
+          score[player]--;
+          score[otherPlayer]--;
         }
-      } else if (isDeuce()) {
-        score[player] = 'adv';
-      } else {
-        score[player] = PTS[index + 1];
       }
+
+      score[player]++;
 
       return this;
     };
@@ -41,39 +38,50 @@
 
     var isGamePointFor = function(player) {
       var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
-      var score1 = score[player];
-      var score2 = score[otherPlayer];
 
       return (
-        isAdvantage(score1) || (
-          isLastPoint(score1) &&
-          !isLastPoint(score2) &&
-          !isAdvantage(score2)
+        isAdvantage(score[player]) || (
+          isLastIndex(score[player]) &&
+          !isLastIndex(score[otherPlayer]) &&
+          !isAdvantage(score[otherPlayer])
         )
       );
     };
 
-    var isLastPoint = function(playerScore) {
-      var lastPoint = PTS[PTS.length - 1];
-      return playerScore === lastPoint;
+    var isLastIndex = function(index) {
+      return index === LAST_INDEX;
     };
 
-    var isAdvantage = function(playerScore) {
-      return playerScore === 'adv';
+    var isAdvantage = function(index) {
+      return index === (LAST_INDEX + 1);
     };
 
     var isDeuce = function() {
       return (
-        isLastPoint(score[PLAYER_1]) &&
-        isLastPoint(score[PLAYER_2])
+        isLastIndex(score[PLAYER_1]) &&
+        isLastIndex(score[PLAYER_2])
       );
+    };
+
+    var translateScore = function(index) {
+      var pts = PTS[index];
+
+      if (index > LAST_INDEX) {
+        if (Math.abs(score[0] - score[1]) <= 1) {
+          pts = 'adv';
+        } else {
+          pts = 'win';
+        }
+      }
+
+      return pts;
     };
 
     var player1WinsExchange = function() { return addPointToPlayer(PLAYER_1); };
     var player2WinsExchange = function() { return addPointToPlayer(PLAYER_2); };
 
-    var player1Score = function() { return score[PLAYER_1]; };
-    var player2Score = function() { return score[PLAYER_2]; };
+    var player1Score = function() { return translateScore(score[PLAYER_1]); };
+    var player2Score = function() { return translateScore(score[PLAYER_2]); };
 
     var isGamePointForPlayer1 = function() { return isGamePointFor(PLAYER_1); };
     var isGamePointForPlayer2 = function() { return isGamePointFor(PLAYER_2); };
