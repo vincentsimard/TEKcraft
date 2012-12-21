@@ -19,8 +19,11 @@
       if (isOver()) { throw new Error(); }
 
       if (isAdvantageFor(otherPlayer)) {
-        // Going back to 40:40
-        // Removing the point that is awarded to the player
+        // Going back to 40:40 instead
+        // and removing the point that is awarded to the player
+        // Note: Could also have kept adding points
+        //       and modify the isDeuce function to check that the score for
+        //       both players is equal and greater than LAST_POINT
         score[player]--;
         score[otherPlayer]--;
       }
