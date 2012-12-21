@@ -13,12 +13,12 @@
 
     var score = [0,0];
 
-    var addPointToPlayer = function(player) {
+    var addPointTo = function(player) {
       var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
 
       if (isOver()) { throw new Error(); }
 
-      if (isAdvantage(score[otherPlayer])) {
+      if (isAdvantageFor(otherPlayer)) {
         // Going back to 40:40
         // Removing the point that is awarded to the player
         score[player]--;
@@ -31,64 +31,53 @@
     };
 
     var isGamePoint = function() {
-      return isGamePointForPlayer1() || isGamePointForPlayer2();
+      return isGamePointFor(PLAYER_1) || isGamePointFor(PLAYER_2);
     };
 
     var isGamePointFor = function(player) {
       var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
 
       return (
-        isAdvantage(score[player]) || (
-          isLastIndex(score[player]) &&
-          !isLastIndex(score[otherPlayer]) &&
-          !isAdvantage(score[otherPlayer])
+        score[player] >= LAST_POINT &&
+        score[player] > score[otherPlayer]
+      );
+    };
+
+    var isAdvantageFor = function(player) {
+      return score[player] > LAST_POINT && !isOver();
+    };
+
+    var isDeuce = function() {
+      return player1Score() === player2Score() === LAST_POINT;
+    };
+
+    var player1WinsExchange = function() { return addPointTo(PLAYER_1); };
+    var player2WinsExchange = function() { return addPointTo(PLAYER_2); };
+
+    var player1Score = function() { return score[PLAYER_1]; };
+    var player2Score = function() { return score[PLAYER_2]; };
+
+    var isOver = function() {
+      var difference = Math.abs(player1Score() - player2Score());
+
+      return (
+        difference > 1 &&
+        (
+          player1Score() > LAST_POINT ||
+          player2Score() > LAST_POINT
         )
       );
     };
 
-    var isLastIndex = function(index) {
-      return index === LAST_POINT;
-    };
-
-    var isAdvantage = function(index) {
-      return index === (LAST_POINT + 1);
-    };
-
-    var isDeuce = function() {
-      return (
-        isLastIndex(score[PLAYER_1]) &&
-        isLastIndex(score[PLAYER_2])
-      );
-    };
-
-    var player1WinsExchange = function() { return addPointToPlayer(PLAYER_1); };
-    var player2WinsExchange = function() { return addPointToPlayer(PLAYER_2); };
-
-    var player1Score = function() { return translatePoint(score[PLAYER_1]); };
-    var player2Score = function() { return translatePoint(score[PLAYER_2]); };
-
-    var isGamePointForPlayer1 = function() { return isGamePointFor(PLAYER_1); };
-    var isGamePointForPlayer2 = function() { return isGamePointFor(PLAYER_2); };
-
-    var isOver = function() {
-      return (
-        player1Score() === 'win' ||
-        player2Score() === 'win'
-      );
-    };
-
     var translatePoint = function(index) {
-      var pts = PTS[index];
+      var difference = Math.abs(player1Score() - player2Score());
+      var point = PTS[index];
 
       if (index > LAST_POINT) {
-        if (Math.abs(score[0] - score[1]) > 1) {
-          pts = 'win';
-        } else {
-          pts = 'adv';
-        }
+        point = difference > 1 ? 'win' : 'adv';
       }
 
-      return pts;
+      return point;
     };
 
     var translateScore = function(result) {
@@ -107,7 +96,7 @@
       result = result.replace(/forty, forty/g, 'deuce');
 
       if (isOver()) {
-        result = 'game Player ' + (player1Score() === 'win' ? 1 : 2);
+        result = 'game Player ' + (player1Score() > player2Score() ? 1 : 2);
       }
 
       return result;
@@ -117,19 +106,18 @@
       player1WinsExchange: player1WinsExchange,
       player2WinsExchange: player2WinsExchange,
 
-      player1Score: player1Score,
-      player2Score: player2Score,
+      player1Score: function() { return translatePoint(player1Score()); },
+      player2Score: function() { return translatePoint(player2Score()); },
 
       isOver: isOver,
 
       isGamePoint: isGamePoint,
-      isGamePointForPlayer1: isGamePointForPlayer1,
-      isGamePointForPlayer2: isGamePointForPlayer2,
+      isGamePointForPlayer1: function() { return isGamePointFor(PLAYER_1); },
+      isGamePointForPlayer2: function() { return isGamePointFor(PLAYER_2); },
 
       score: function() {
-        var result = player1Score() + ', ' + player2Score();
-
-        return translateScore(result);
+        var score = translatePoint(player1Score()) + ', ' + translatePoint(player2Score());
+        return translateScore(score);
       }
     };
   };
