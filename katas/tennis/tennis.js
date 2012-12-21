@@ -38,39 +38,38 @@
       var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
 
       return (
-        score[player] >= LAST_POINT &&
-        score[player] > score[otherPlayer]
+        scoreFor(player) >= LAST_POINT &&
+        scoreFor(player) > scoreFor(otherPlayer)
       );
     };
 
     var isAdvantageFor = function(player) {
-      return score[player] > LAST_POINT && !isOver();
+      return scoreFor(player) > LAST_POINT && !isOver();
     };
 
     var isDeuce = function() {
-      return player1Score() === player2Score() === LAST_POINT;
+      return scoreFor(PLAYER_1) === scoreFor(PLAYER_2) === LAST_POINT;
     };
 
     var player1WinsExchange = function() { return addPointTo(PLAYER_1); };
     var player2WinsExchange = function() { return addPointTo(PLAYER_2); };
 
-    var player1Score = function() { return score[PLAYER_1]; };
-    var player2Score = function() { return score[PLAYER_2]; };
+    var scoreFor = function(player) { return score[player]; };
 
     var isOver = function() {
-      var difference = Math.abs(player1Score() - player2Score());
+      var difference = Math.abs(scoreFor(PLAYER_1) - scoreFor(PLAYER_2));
 
       return (
         difference > 1 &&
         (
-          player1Score() > LAST_POINT ||
-          player2Score() > LAST_POINT
+          scoreFor(PLAYER_1) > LAST_POINT ||
+          scoreFor(PLAYER_2) > LAST_POINT
         )
       );
     };
 
     var translatePoint = function(index) {
-      var difference = Math.abs(player1Score() - player2Score());
+      var difference = Math.abs(scoreFor(PLAYER_1) - scoreFor(PLAYER_2));
       var point = PTS[index];
 
       if (index > LAST_POINT) {
@@ -96,7 +95,7 @@
       result = result.replace(/forty, forty/g, 'deuce');
 
       if (isOver()) {
-        result = 'game Player ' + (player1Score() > player2Score() ? 1 : 2);
+        result = 'game Player ' + (scoreFor(PLAYER_1) > scoreFor(PLAYER_2) ? 1 : 2);
       }
 
       return result;
@@ -106,8 +105,8 @@
       player1WinsExchange: player1WinsExchange,
       player2WinsExchange: player2WinsExchange,
 
-      player1Score: function() { return translatePoint(player1Score()); },
-      player2Score: function() { return translatePoint(player2Score()); },
+      player1Score: function() { return translatePoint(scoreFor(PLAYER_1)); },
+      player2Score: function() { return translatePoint(scoreFor(PLAYER_2)); },
 
       isOver: isOver,
 
@@ -116,7 +115,7 @@
       isGamePointForPlayer2: function() { return isGamePointFor(PLAYER_2); },
 
       score: function() {
-        var score = translatePoint(player1Score()) + ', ' + translatePoint(player2Score());
+        var score = translatePoint(scoreFor(PLAYER_1)) + ', ' + translatePoint(scoreFor(PLAYER_2));
         return translateScore(score);
       }
     };
