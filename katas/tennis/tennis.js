@@ -86,17 +86,21 @@
     };
 
     var translateScore = function(result) {
-      var matchPoints, matchAll, i;
+      var rePoints, reAll, i;
       var winningPlayer = scoreFor(PLAYER_1) > scoreFor(PLAYER_2) ? 1 : 2;
 
       if (isOver()) { return 'game Player ' + winningPlayer; }
       if (isAdvantage()) { return 'advantage Player ' + winningPlayer; }
       
       for (i = PTS.length - 1; i >= 0; i--) {
-        matchPoints = new RegExp(PTS[i], 'g');
-        matchAll = new RegExp('((' + PTS_NAME[i] + ')(, ){0,1}){2}', 'g');
-        result = result.replace(matchPoints, PTS_NAME[i]);
-        result = result.replace(matchAll, PTS_NAME[i] + ' all');
+        // Matches '0', '15', '30', '40' occurences
+        rePoints = new RegExp(PTS[i], 'g');
+
+        // Matches 'love, love', 'fifteen, fifteen', etc.
+        reAll = new RegExp('((' + PTS_NAME[i] + ')(, ){0,1}){2}', 'g');
+
+        result = result.replace(rePoints, PTS_NAME[i]);
+        result = result.replace(reAll, PTS_NAME[i] + ' all');
       }
 
       result = result.replace(/forty all/g, 'deuce');
