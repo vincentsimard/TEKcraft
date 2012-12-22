@@ -86,29 +86,20 @@
     };
 
     var translateScore = function(result) {
-      var re, i;
+      var matchPoints, matchAll, i;
       var winningPlayer = scoreFor(PLAYER_1) > scoreFor(PLAYER_2) ? 1 : 2;
 
-      if (isOver()) {
-        result = 'game Player ' + winningPlayer;
-      } else if (isAdvantage()) {
-        result = 'advantage Player ' + winningPlayer;
-      } else {
-        for (i = PTS.length - 1; i >= 0; i--) {
-          re = new RegExp(PTS[i], 'g');
-          result = result.replace(re, PTS_NAME[i]);
-        }
-
-        // @TODO: There's probably a way to do away with this loop
-        //        and just replace the string if it matches the pattern:
-        //          [word], [word]
-        for (i = PTS.length - 1; i >= 0; i--) {
-          re = new RegExp('((' + PTS_NAME[i] + ')(, ){0,1}){2}', 'g');
-          result = result.replace(re, PTS_NAME[i] + ' all');
-        }
-
-        result = result.replace(/forty all/g, 'deuce');
+      if (isOver()) { return 'game Player ' + winningPlayer; }
+      if (isAdvantage()) { return 'advantage Player ' + winningPlayer; }
+      
+      for (i = PTS.length - 1; i >= 0; i--) {
+        matchPoints = new RegExp(PTS[i], 'g');
+        matchAll = new RegExp('((' + PTS_NAME[i] + ')(, ){0,1}){2}', 'g');
+        result = result.replace(matchPoints, PTS_NAME[i]);
+        result = result.replace(matchAll, PTS_NAME[i] + ' all');
       }
+
+      result = result.replace(/forty all/g, 'deuce');
 
       return result;
     };
