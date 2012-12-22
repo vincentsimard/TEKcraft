@@ -57,11 +57,13 @@
 
     var scoreFor = function(player) { return score[player]; };
 
-    var isOver = function() {
-      var difference = Math.abs(scoreFor(PLAYER_1) - scoreFor(PLAYER_2));
+    var pointLead = function() {
+      return Math.abs(scoreFor(PLAYER_1) - scoreFor(PLAYER_2));
+    };
 
+    var isOver = function() {
       return (
-        difference > 1 &&
+        pointLead() > 1 &&
         (
           scoreFor(PLAYER_1) > LAST_POINT ||
           scoreFor(PLAYER_2) > LAST_POINT
@@ -70,25 +72,25 @@
     };
 
     var translatePoint = function(index) {
-      var difference = Math.abs(scoreFor(PLAYER_1) - scoreFor(PLAYER_2));
       var point = PTS[index];
 
       if (index > LAST_POINT) {
-        point = difference > 1 ? 'win' : 'adv';
+        point = pointLead() > 1 ? 'win' : 'adv';
       }
 
       return point;
     };
 
     var translateScore = function(result) {
-      var re, i;
+      var re, i, winningPlayer;
 
       if (isOver()) {
-        result = 'game Player ' + (scoreFor(PLAYER_1) > scoreFor(PLAYER_2) ? 1 : 2);
-      } else if (isAdvantageFor(PLAYER_1) || isAdvantageFor(PLAYER_2)) {
+        winningPlayer = scoreFor(PLAYER_1) > scoreFor(PLAYER_2) ? 1 : 2;
+        result = 'game Player ' + winningPlayer;
+      } else {
         result = result.replace('adv, 40', 'advantage Player 1');
         result = result.replace('40, adv', 'advantage Player 2');
-      } else {
+
         for (i = PTS.length - 1; i >= 0; i--) {
           re = new RegExp(PTS[i], 'g');
           result = result.replace(re, PTS_NAME[i]);
