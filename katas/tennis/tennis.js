@@ -5,6 +5,7 @@
 
   Tennis.Game = function() {
     var PTS = [0, 15, 30, 40];
+    var PTS_NAME = ['love', 'fifteen', 'thirty', 'forty'];
 
     var LAST_POINT = PTS.indexOf(40);
 
@@ -83,22 +84,27 @@
     };
 
     var translateScore = function(result) {
-      result = result.replace('adv, 40', 'advantage Player 1');
-      result = result.replace('40, adv', 'advantage Player 2');
-
-      result = result.replace(/40/g, 'forty');
-      result = result.replace(/30/g, 'thirty');
-      result = result.replace(/15/g, 'fifteen');
-      result = result.replace(/0/g, 'love');
-
-      result = result.replace(/love, love/g, 'love all');
-      result = result.replace(/fifteen, fifteen/g, 'fifteen all');
-      result = result.replace(/thirty, thirty/g, 'thirty all');
-
-      result = result.replace(/forty, forty/g, 'deuce');
+      var re;
+      var matches;
+      var i;
 
       if (isOver()) {
         result = 'game Player ' + (scoreFor(PLAYER_1) > scoreFor(PLAYER_2) ? 1 : 2);
+      } else if (isAdvantageFor(PLAYER_1) || isAdvantageFor(PLAYER_2)) {
+        result = result.replace('adv, 40', 'advantage Player 1');
+        result = result.replace('40, adv', 'advantage Player 2');
+      } else {
+        for (i = PTS.length - 1; i >= 0; i--) {
+          re = new RegExp(PTS[i], 'g');
+          result = result.replace(re, PTS_NAME[i]);
+        }
+
+        for (i = PTS.length - 1; i >= 0; i--) {
+          re = new RegExp('((' + PTS_NAME[i] + ')(, ){0,1}){2}', 'g');
+          result = result.replace(re, PTS_NAME[i] + ' all');
+        }
+
+        result = result.replace(/forty all/g, 'deuce');
       }
 
       return result;
