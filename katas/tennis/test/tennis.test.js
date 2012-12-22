@@ -3,10 +3,18 @@
 
   var chai = require('chai');
   var should = chai.should();
+  var Assertion = chai.Assertion;
 
-  var Game = require('./../Tennis').Tennis.Game;
+  Assertion.addMethod('score', function (score1, score2) {
+      var game = this._obj;
 
-  describe('TennisGame', function() {
+      game.player1Score().should.equal(score1);
+      game.player2Score().should.equal(score2);
+  });
+
+  var Game = require('./../tennis').Tennis.Game;
+
+  describe('Tennis.Game', function() {
     var game;
 
     beforeEach(function(done) {
@@ -27,6 +35,8 @@
     var simulateDeuce = function() {
       simulateExchanges(1,1,1,2,2,2);
     };
+
+
 
     it('should be defined', function() {
       Game.should.not.be.undefined;
@@ -65,39 +75,34 @@
     });
 
     describe('scoring', function() {
-      var assertScore = function(score1, score2) {
-        game.player1Score().should.equal(score1);
-        game.player2Score().should.equal(score2);
-      };
-
       describe('(normal conditions)', function() {
         it('should be zero at the start of the game', function() {
-          assertScore(0,0);
+          game.should.score(0,0);
         });
 
         it('should be 15 when a player wins an exchange', function() {
           simulateExchanges(2);
-          assertScore(0,15);
+          game.should.score(0,15);
         });
 
         it('should be 30 when a player wins two exchanges', function() {
           simulateExchanges(1,1);
-          assertScore(30,0);
+          game.should.score(30,0);
         });
 
         it('should be 40 when a player wins three exchanges', function() {
           simulateExchanges(1,1,1);
-          assertScore(40,0);
+          game.should.score(40,0);
         });
 
         it('should be 15:15 when both players win one exchange', function() {
           simulateExchanges(1,2);
-          assertScore(15,15);
+          game.should.score(15,15);
         });
 
         it('should be 40:40 when both players win three exchanges', function(){
           simulateDeuce();
-          assertScore(40,40);
+          game.should.score(40,40);
         });
       });
 
@@ -105,13 +110,13 @@
         it('should be adv:40 when the score is 40:40 and a wins an exchange', function() {
           simulateDeuce();
           simulateExchanges(1);
-          assertScore('adv', 40);
+          game.should.score('adv', 40);
         });
 
         it('should go back to 40:40 when a player having the advantage loses an exchange', function() {
           simulateDeuce();
           simulateExchanges(1,2);
-          assertScore(40,40);
+          game.should.score(40,40);
         });
 
         it('should go back to 40:40 after a ridiculously long game where both players win exchanges back and forth', function() {
@@ -119,24 +124,24 @@
           for (var i=0; i < 20; i++) {
             simulateExchanges(1,2);
           }
-          assertScore(40,40);
+          game.should.score(40,40);
         });
       });
       
       describe('(wins)', function() {
         it('should declare a player has won if he wins 4 straight exchanges', function() {
           simulateExchanges(1,1,1,1);
-          assertScore('win',0);
+          game.should.score('win',0);
 
           game = new Game();
           simulateExchanges(2,2,2,2);
-          assertScore(0,'win');
+          game.should.score(0,'win');
         });
 
         it('should declare a player has won if he wins an exchange when he has the advantage', function() {
           simulateDeuce();
           simulateExchanges(2,2);
-          assertScore(40, 'win');
+          game.should.score(40, 'win');
         });
 
         it('should throw an error if players try to play when the game has already been won', function() {
