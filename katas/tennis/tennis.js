@@ -84,9 +84,7 @@
     };
 
     var translateScore = function(result) {
-      var re;
-      var matches;
-      var i;
+      var re, i;
 
       if (isOver()) {
         result = 'game Player ' + (scoreFor(PLAYER_1) > scoreFor(PLAYER_2) ? 1 : 2);
@@ -99,6 +97,9 @@
           result = result.replace(re, PTS_NAME[i]);
         }
 
+        // @TODO: There's probably a way to do away with this loop
+        //        and just replace the string if it matches the pattern:
+        //          [word], [word]
         for (i = PTS.length - 1; i >= 0; i--) {
           re = new RegExp('((' + PTS_NAME[i] + ')(, ){0,1}){2}', 'g');
           result = result.replace(re, PTS_NAME[i] + ' all');
