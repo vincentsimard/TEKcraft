@@ -55,9 +55,6 @@
       return scoreFor(PLAYER_1) === scoreFor(PLAYER_2) === LAST_POINT;
     };
 
-    var player1WinsExchange = function() { return addPointTo(PLAYER_1); };
-    var player2WinsExchange = function() { return addPointTo(PLAYER_2); };
-
     var scoreFor = function(player) { return score[player]; };
 
     var isOver = function() {
@@ -112,8 +109,8 @@
     };
 
     return {
-      player1WinsExchange: player1WinsExchange,
-      player2WinsExchange: player2WinsExchange,
+      player1WinsExchange: function() { return addPointTo(PLAYER_1); },
+      player2WinsExchange: function() { return addPointTo(PLAYER_2); },
 
       player1Score: function() { return translatePoint(scoreFor(PLAYER_1)); },
       player2Score: function() { return translatePoint(scoreFor(PLAYER_2)); },
