@@ -3,7 +3,7 @@
 
   var Tennis = Tennis || {};
 
-  Tennis.Game = function() {
+  Tennis.Game = function(player1Name, player2Name) {
     var PTS = [0, 15, 30, 40];
     var PTS_NAME = ['love', 'fifteen', 'thirty', 'forty'];
 
@@ -11,7 +11,11 @@
 
     var PLAYER_1 = 0;
     var PLAYER_2 = 1;
-    var PLAYER_NAMES = ['Player 1', 'Player 2'];
+
+    var playerNames = [
+      typeof player1Name === 'undefined' ? 'Player 1' : player1Name,
+      typeof player2Name === 'undefined' ? 'Player 2' : player2Name
+    ];
 
     var score = [0,0];
 
@@ -94,7 +98,7 @@
     };
 
     var winningPlayerName = function() {
-      return PLAYER_NAMES[winningPlayer()];
+      return playerNames[winningPlayer()];
     };
 
     return {

@@ -73,16 +73,16 @@
       }
     };
 
-    var simulateDeuce = function() {
-      game = new Game();
+    var simulateDeuce = function(player1Name, player2Name) {
+      game = new Game(player1Name, player2Name);
       simulateExchanges(
         PLAYER_1, PLAYER_1, PLAYER_1,
         PLAYER_2, PLAYER_2, PLAYER_2
       );
     };
 
-    var simulateSweepFor = function(player) {
-      game = new Game();
+    var simulateSweepFor = function(player, player1Name, player2Name) {
+      game = new Game(player1Name, player2Name);
       simulateExchanges(player, player, player, player);
 
       game.should.be.over();
@@ -253,6 +253,27 @@
 
         simulateSweepFor(PLAYER_2);
         game.score().should.equal('game Player 2');
+      });
+    });
+
+    describe('player names', function() {
+      // Using the score() method to test names
+      // Names are only displayed when the score is advantage or game
+      it('should default to "Player 1" and "Player 2"', function() {
+        simulateSweepFor(PLAYER_1);
+        game.score().should.equal('game Player 1');
+
+        simulateSweepFor(PLAYER_2);
+        game.score().should.equal('game Player 2');
+      });
+
+      it('should be custom names if the game is initialized with names', function() {
+        simulateDeuce('Roger Federer', 'Rafael Nadal');
+        simulateExchanges(PLAYER_1);
+        game.score().should.equal('advantage Roger Federer');
+
+        simulateSweepFor(PLAYER_2, 'Milos Raonic', 'Andy Murray');
+        game.score().should.equal('game Andy Murray');
       });
     });
   });
