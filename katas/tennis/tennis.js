@@ -27,16 +27,18 @@
       var opponent = opponentOf(player);
 
       if (isOver()) { throw new Error(); }
-
+      
+      // Back to deuce
       if (isAdvantageFor(opponent)) {
-        // Back to deuce
-        // Setting the opponent's score back to 40 and
-        // removing the point that is awarded to the player
+        // Setting the opponent's score back to 40
+        score[player]--;
+
+        // Removing the point that is awarded to the player
+        score[opponent]--;
+
         // Note: We could also have kept adding points regardless
         //       and modify the isDeuce function to check that the score is tied
         //       and greater than LAST_POINT
-        score[player]--;
-        score[opponent]--;
       }
 
       score[player]++;
@@ -92,7 +94,7 @@
     };
 
     var winningPlayer = function() {
-      var player = scoreFor(PLAYER_2) > scoreFor(PLAYER_1) ? PLAYER_2 : PLAYER_1;
+      var player = scoreFor(PLAYER_2) > scoreFor(PLAYER_1) ? PLAYER_2:PLAYER_1;
 
       return !isTied() ? player : -1;
     };
