@@ -44,12 +44,12 @@
     utils.addMethod(chai.Assertion.prototype, 'gamePointFor', function (player) {
       var game = utils.flag(this, 'object');
       var truthy = !utils.flag(this, 'negate');
-      var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+      var opponent = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
 
       game.should.be.gamePoint();
 
       game['isGamePointForPlayer' + player]().should.be[truthy];
-      game['isGamePointForPlayer' + otherPlayer]().should.be[!truthy];
+      game['isGamePointForPlayer' + opponent]().should.be[!truthy];
     });
   });
 
@@ -76,26 +76,17 @@
     var simulateDeuce = function() {
       game = new Game();
       simulateExchanges(
-        PLAYER_1,
-        PLAYER_1,
-        PLAYER_1,
-        PLAYER_2,
-        PLAYER_2,
-        PLAYER_2
+        PLAYER_1, PLAYER_1, PLAYER_1,
+        PLAYER_2, PLAYER_2, PLAYER_2
       );
     };
 
     var simulateSweepFor = function(player) {
       game = new Game();
-      simulateExchanges(
-        player,
-        player,
-        player,
-        player
-      );
+      simulateExchanges(player, player, player, player);
 
       game.should.be.over();
-    }
+    };
 
 
 
@@ -235,10 +226,10 @@
       it('should use "all" for equal scores', function() {
         game.score().should.equal('love all');
 
-        simulateExchanges(PLAYER_1,PLAYER_2)
+        simulateExchanges(PLAYER_1,PLAYER_2);
         game.score().should.equal('fifteen all');
 
-        simulateExchanges(PLAYER_1,PLAYER_2)
+        simulateExchanges(PLAYER_1,PLAYER_2);
         game.score().should.equal('thirty all');
       });
 

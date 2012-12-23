@@ -11,24 +11,25 @@
 
     var PLAYER_1 = 0;
     var PLAYER_2 = 1;
+    var PLAYER_NAMES = ['Player 1', 'Player 2'];
 
     var score = [0,0];
 
     var scoreFor = function(player) { return score[player]; };
 
     var addPointTo = function(player) {
-      var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+      var opponent = opponentOf(player);
 
       if (isOver()) { throw new Error(); }
 
-      if (isAdvantageFor(otherPlayer)) {
+      if (isAdvantageFor(opponent)) {
         // Going back to 40:40 instead
         // and removing the point that is awarded to the player
         // Note: Could also have kept adding points
-        //       and modify the isDeuce function to check that the score for
-        //       both players is equal and greater than LAST_POINT
+        //       and modify the isDeuce function to check that the score is tied
+        //       and greater than LAST_POINT
         score[player]--;
-        score[otherPlayer]--;
+        score[opponent]--;
       }
 
       score[player]++;
@@ -36,16 +37,18 @@
       return this;
     };
 
+    var opponentOf = function(player) {
+      return player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+    };
+
     var isGamePoint = function() {
       return isGamePointFor(PLAYER_1) || isGamePointFor(PLAYER_2);
     };
 
     var isGamePointFor = function(player) {
-      var otherPlayer = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
-
       return (
         scoreFor(player) >= LAST_POINT &&
-        scoreFor(player) > scoreFor(otherPlayer)
+        scoreFor(player) > scoreFor(opponentOf(player))
       );
     };
 
@@ -58,7 +61,10 @@
     };
 
     var isDeuce = function() {
-      return scoreFor(PLAYER_1) === scoreFor(PLAYER_2) === LAST_POINT;
+      return (
+        scoreFor(PLAYER_1) === scoreFor(PLAYER_2) &&
+        scoreFor(PLAYER_1) === LAST_POINT
+      );
     };
 
     var pointLead = function() {
@@ -75,45 +81,28 @@
       );
     };
 
-    var translatePoint = function(index) {
-      var point = PTS[index];
+    var translateScore = function(score) {
+      var point = PTS[score];
 
-      if (index > LAST_POINT) {
+      if (score > LAST_POINT) {
         point = pointLead() > 1 ? 'win' : 'adv';
       }
 
       return point;
     };
 
-    var translateScore = function(result) {
-      var rePoints, reAll, i;
-      var winningPlayer = scoreFor(PLAYER_1) > scoreFor(PLAYER_2) ? 1 : 2;
-
-      if (isOver()) { return 'game Player ' + winningPlayer; }
-      if (isAdvantage()) { return 'advantage Player ' + winningPlayer; }
-      
-      for (i = PTS.length - 1; i >= 0; i--) {
-        // Matches '0', '15', '30', '40' occurences
-        rePoints = new RegExp(PTS[i], 'g');
-
-        // Matches 'love, love', 'fifteen, fifteen', etc.
-        reAll = new RegExp('((' + PTS_NAME[i] + ')(, ){0,1}){2}', 'g');
-
-        result = result.replace(rePoints, PTS_NAME[i]);
-        result = result.replace(reAll, PTS_NAME[i] + ' all');
-      }
-
-      result = result.replace(/forty all/g, 'deuce');
-
-      return result;
+    var winningPlayer = function() {
+      var index = scoreFor(PLAYER_2) > scoreFor(PLAYER_1) ? PLAYER_2 : PLAYER_1;
+      var isTied = pointLead() === 0;
+      return !isTied ? PLAYER_NAMES[index] : -1;
     };
 
     return {
       player1WinsExchange: function() { return addPointTo(PLAYER_1); },
       player2WinsExchange: function() { return addPointTo(PLAYER_2); },
 
-      player1Score: function() { return translatePoint(scoreFor(PLAYER_1)); },
-      player2Score: function() { return translatePoint(scoreFor(PLAYER_2)); },
+      player1Score: function() { return translateScore(scoreFor(PLAYER_1)); },
+      player2Score: function() { return translateScore(scoreFor(PLAYER_2)); },
 
       isOver: isOver,
 
@@ -122,8 +111,29 @@
       isGamePointForPlayer2: function() { return isGamePointFor(PLAYER_2); },
 
       score: function() {
-        var score = translatePoint(scoreFor(PLAYER_1)) + ', ' + translatePoint(scoreFor(PLAYER_2));
-        return translateScore(score);
+        var scorePlayer1 = translateScore(scoreFor(PLAYER_1));
+        var scorePlayer2 = translateScore(scoreFor(PLAYER_2));
+
+        var score = scorePlayer1 + ', ' + scorePlayer2;
+
+        var rePoints, reAll;
+
+        if (isDeuce()) { return 'deuce'; }
+        if (isOver()) { return 'game ' + winningPlayer(); }
+        if (isAdvantage()) { return 'advantage ' + winningPlayer(); }
+        
+        for (var i = PTS.length - 1; i >= 0; i--) {
+          // Matches '0', '15', '30', '40' occurences
+          rePoints = new RegExp(PTS[i], 'g');
+
+          // Matches 'love, love', 'fifteen, fifteen', etc.
+          reAll = new RegExp('((' + PTS_NAME[i] + ')(, ){0,1}){2}', 'g');
+
+          score = score.replace(rePoints, PTS_NAME[i]);
+          score = score.replace(reAll, PTS_NAME[i] + ' all');
+        }
+
+        return score;
       }
     };
   };
