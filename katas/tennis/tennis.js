@@ -25,8 +25,14 @@
 
     var addPointTo = function(player) {
       var opponent = opponentOf(player);
+      var errorMessage;
 
-      if (isOver()) { throw new Error(); }
+      if (isOver()) {
+        errorMessage = 'Whoops! ' +
+                       'Cannot add points to ' + playerNames[player] + '. ' +
+                       'The game is over.';
+        throw new Error(errorMessage);
+      }
       
       // Back to deuce
       if (isAdvantageFor(opponent)) {
