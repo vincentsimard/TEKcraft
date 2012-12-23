@@ -15,6 +15,8 @@
 
     var score = [0,0];
 
+
+
     var scoreFor = function(player) { return score[player]; };
 
     var addPointTo = function(player) {
@@ -23,9 +25,10 @@
       if (isOver()) { throw new Error(); }
 
       if (isAdvantageFor(opponent)) {
-        // Going back to 40:40 instead
-        // and removing the point that is awarded to the player
-        // Note: Could also have kept adding points
+        // Back to deuce
+        // Setting the opponent's score back to 40 and
+        // removing the point that is awarded to the player
+        // Note: We could also have kept adding points regardless
         //       and modify the isDeuce function to check that the score is tied
         //       and greater than LAST_POINT
         score[player]--;
@@ -37,8 +40,16 @@
       return this;
     };
 
-    var opponentOf = function(player) {
-      return player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+    var isAdvantage = function() {
+      return isAdvantageFor(PLAYER_1) || isAdvantageFor(PLAYER_2);
+    };
+
+    var isAdvantageFor = function(player) {
+      return scoreFor(player) > LAST_POINT && !isOver();
+    };
+
+    var isDeuce = function() {
+      return isTied() && scoreFor(PLAYER_1) === LAST_POINT;
     };
 
     var isGamePoint = function() {
@@ -52,33 +63,18 @@
       );
     };
 
-    var isAdvantage = function() {
-      return isAdvantageFor(PLAYER_1) || isAdvantageFor(PLAYER_2);
+    var isOver = function() {
+      return pointLead() > 1 && scoreFor(winningPlayer()) > LAST_POINT;
     };
 
-    var isAdvantageFor = function(player) {
-      return scoreFor(player) > LAST_POINT && !isOver();
-    };
+    var isTied = function() { return pointLead() === 0; };
 
-    var isDeuce = function() {
-      return (
-        scoreFor(PLAYER_1) === scoreFor(PLAYER_2) &&
-        scoreFor(PLAYER_1) === LAST_POINT
-      );
+    var opponentOf = function(player) {
+      return player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
     };
 
     var pointLead = function() {
       return Math.abs(scoreFor(PLAYER_1) - scoreFor(PLAYER_2));
-    };
-
-    var isOver = function() {
-      return (
-        pointLead() > 1 &&
-        (
-          scoreFor(PLAYER_1) > LAST_POINT ||
-          scoreFor(PLAYER_2) > LAST_POINT
-        )
-      );
     };
 
     var translateScore = function(score) {
@@ -92,9 +88,13 @@
     };
 
     var winningPlayer = function() {
-      var index = scoreFor(PLAYER_2) > scoreFor(PLAYER_1) ? PLAYER_2 : PLAYER_1;
-      var isTied = pointLead() === 0;
-      return !isTied ? PLAYER_NAMES[index] : -1;
+      var player = scoreFor(PLAYER_2) > scoreFor(PLAYER_1) ? PLAYER_2 : PLAYER_1;
+
+      return !isTied() ? player : -1;
+    };
+
+    var winningPlayerName = function() {
+      return PLAYER_NAMES[winningPlayer()];
     };
 
     return {
@@ -119,8 +119,8 @@
         var rePoints, reAll;
 
         if (isDeuce()) { return 'deuce'; }
-        if (isOver()) { return 'game ' + winningPlayer(); }
-        if (isAdvantage()) { return 'advantage ' + winningPlayer(); }
+        if (isOver()) { return 'game ' + winningPlayerName(); }
+        if (isAdvantage()) { return 'advantage ' + winningPlayerName(); }
         
         for (var i = PTS.length - 1; i >= 0; i--) {
           // Matches '0', '15', '30', '40' occurences
