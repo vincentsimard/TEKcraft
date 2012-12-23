@@ -14,43 +14,53 @@
 
 
   chai.use(function (_chai, utils) {
-    utils.addMethod(chai.Assertion.prototype, 'score', function (score1, score2) {
-      var game = utils.flag(this, 'object');
+    utils.addMethod(chai.Assertion.prototype,
+      'score', function (score1, score2) {
+        var game = utils.flag(this, 'object');
 
-      game.player1Score().should.equal(score1);
-      game.player2Score().should.equal(score2);
-    });
+        game.player1Score().should.equal(score1);
+        game.player2Score().should.equal(score2);
+      }
+    );
 
-    utils.addMethod(chai.Assertion.prototype, 'deuce', function () {
-      var game = utils.flag(this, 'object');
+    utils.addMethod(chai.Assertion.prototype,
+      'deuce', function () {
+        var game = utils.flag(this, 'object');
 
-      game.should.score(40,40);
-    });
+        game.should.score(40,40);
+      }
+    );
 
-    utils.addMethod(chai.Assertion.prototype, 'over', function () {
-      var game = utils.flag(this, 'object');
-      var truthy = !utils.flag(this, 'negate');
+    utils.addMethod(chai.Assertion.prototype,
+      'over', function () {
+        var game = utils.flag(this, 'object');
+        var truthy = !utils.flag(this, 'negate');
 
-      game.isOver().should.be[truthy];
-    });
+        game.isOver().should.be[truthy];
+      }
+    );
 
-    utils.addMethod(chai.Assertion.prototype, 'gamePoint', function () {
-      var game = utils.flag(this, 'object');
-      var truthy = !utils.flag(this, 'negate');
+    utils.addMethod(chai.Assertion.prototype,
+      'gamePoint', function () {
+        var game = utils.flag(this, 'object');
+        var truthy = !utils.flag(this, 'negate');
 
-      game.isGamePoint().should.be[truthy];
-    });
+        game.isGamePoint().should.be[truthy];
+      }
+    );
 
-    utils.addMethod(chai.Assertion.prototype, 'gamePointFor', function (player) {
-      var game = utils.flag(this, 'object');
-      var truthy = !utils.flag(this, 'negate');
-      var opponent = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+    utils.addMethod(chai.Assertion.prototype,
+      'gamePointFor', function (player) {
+        var game = utils.flag(this, 'object');
+        var truthy = !utils.flag(this, 'negate');
+        var opponent = player === PLAYER_1 ? PLAYER_2 : PLAYER_1;
 
-      game.should.be.gamePoint();
+        game.should.be.gamePoint();
 
-      game['isGamePointForPlayer' + player]().should.be[truthy];
-      game['isGamePointForPlayer' + opponent]().should.be[!truthy];
-    });
+        game['isGamePointForPlayer' + player]().should.be[truthy];
+        game['isGamePointForPlayer' + opponent]().should.be[!truthy];
+      }
+    );
   });
 
 
@@ -128,18 +138,22 @@
       });
 
       // Deuce
-      it('should be deuce when both players win three exchanges', function() {
+      it('should be deuce ' +
+         'when both players win three exchanges', function() {
         simulateDeuce();
         game.should.be.deuce();
       });
 
-      it('should be deuce when a player having the advantage loses an exchange', function() {
+      it('should be deuce ' +
+         'when a player with the advantage loses an exchange', function() {
         simulateDeuce();
         simulateExchanges(PLAYER_1,PLAYER_2);
         game.should.be.deuce();
       });
 
-      it('should be deuce after a ridiculously long game where both players win exchanges back and forth', function() {
+      it('should be deuce ' +
+         'after a ridiculously long game ' +
+         'where both players win exchanges back and forth', function() {
         for (var i=0; i < 20; i++) {
           simulateExchanges(PLAYER_1,PLAYER_2);
         }
@@ -147,14 +161,16 @@
       });
 
       // Advantages
-      it('should be advantage for a player who wins an exchange when it is deuce', function() {
+      it('should be advantage ' +
+         'for a player who wins an exchange when it is deuce', function() {
         simulateDeuce();
         simulateExchanges(PLAYER_1);
         game.should.score('adv',40);
       });
       
       // Wins
-      it('should show a player has won if he wins 4 straight exchanges', function() {
+      it('should show a player has won ' +
+         'if he wins 4 straight exchanges', function() {
         simulateSweepFor(PLAYER_1);
         game.should.score('win',0);
 
@@ -162,7 +178,8 @@
         game.should.score(0,'win');
       });
 
-      it('should show a player has won if he wins an exchange when he has the advantage', function() {
+      it('should show a player has won ' +
+         'if he wins an exchange when he has the advantage', function() {
         simulateDeuce();
         simulateExchanges(PLAYER_2,PLAYER_2);
         game.should.score(40,'win');
@@ -170,7 +187,8 @@
     });
 
     // Game point
-    it('should not be game point if a player wins less than 3 exchanges', function() {
+    it('should not be game point ' +
+       'if a player wins less than 3 exchanges', function() {
       simulateExchanges(PLAYER_1);
       game.should.not.be.gamePoint();
 
@@ -178,24 +196,28 @@
       game.should.not.be.gamePoint();
     });
 
-    it('should be game point if a player wins at least 3 exchanges', function() {
+    it('should be game point ' +
+       'if a player wins at least 3 exchanges', function() {
       simulateExchanges(PLAYER_2,PLAYER_2,PLAYER_2);
       game.should.be.gamePoint();
       game.should.be.gamePointFor(PLAYER_2);
     });
 
-    it('should not be game point if both players have won 3 exchanges (deuce)', function() {
+    it('should not be game point ' +
+       'if both players have won 3 exchanges (deuce)', function() {
       simulateDeuce();
       game.should.not.be.gamePoint();
     });
 
-    it('should be game point after a player wins an exchange when it is deuce', function() {
+    it('should be game point ' +
+       'after a player wins an exchange when it is deuce', function() {
       simulateDeuce();
       simulateExchanges(PLAYER_1);
       game.should.be.gamePointFor(PLAYER_1);
     });
 
-    it('should throw an error if players try to play when the game is over', function() {
+    it('should throw an error ' +
+       'if players try to play when the game is over', function() {
       simulateSweepFor(PLAYER_1);
 
       var oneMoreExchange = (function() {
@@ -267,7 +289,8 @@
         game.score().should.equal('game Player 2');
       });
 
-      it('should be custom names if the game is initialized with names', function() {
+      it('should be custom names ' +
+         'if the game is initialized with names', function() {
         simulateDeuce('Roger Federer', 'Rafael Nadal');
         simulateExchanges(PLAYER_1);
         game.score().should.equal('advantage Roger Federer');
