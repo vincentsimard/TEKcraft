@@ -20,36 +20,54 @@
     });
 
     describe('spawn', function() {
-      var nextCycleCells = function() {
+      var nextCycleGrid = function() {
         var grid = new Grid();
         Grid.apply(grid, arguments);
-        return grid.spawn().liveCells;
+        return grid.spawn();
+      };
+
+      var assertIsAliveAfterCycle = function() {
+        var nextGrid = nextCycleGrid.apply(null, arguments);
+        return function(cell) {
+          nextGrid.liveCells.containsArray(cell).should.be.true;
+        }
+      };
+
+      var assertIsDeadAfterCycle = function() {
+        var nextGrid = nextCycleGrid.apply(null, arguments);
+        return function(cell) {
+          nextGrid.liveCells.containsArray(cell).should.be.false;
+        }
       };
 
       it('should spawn an empty board if empty', function() {
-        nextCycleCells().should.be.empty;
+        nextCycleGrid().liveCells.should.be.empty;
       });
 
       it('should kill a lonely cell', function() {
-        nextCycleCells([1,1]).should.be.empty;
+        nextCycleGrid([1,1]).liveCells.should.be.empty;
       });
 
-      // @TODO: Replace eql with include (for arrays)!
+      it('should kill a cell with one neighbor', function() {
+        nextCycleGrid([0,0], [0,1]).liveCells.should.be.empty;
+      });
+
       it('should keep a cell with two neighbors', function() {
-        nextCycleCells([1,1], [2,0], [2,2]).should.eql([[1,1]]);
+        assertIsAliveAfterCycle([1,1], [2,0], [2,2])([1,1]);
       });
 
       it('should keep a cell with three neighbors', function() {
-        nextCycleCells([1,1], [0,0], [2,0], [2,2]).should.eql([[1,1]]);
+        assertIsAliveAfterCycle([1,1], [0,0], [2,0], [2,2])([1,1]);
       });
 
-      // @TODO:
-      it('should revive a cell with three neighbors', function() {
-        // nextCycleCells([0,0], [2,0], [2,2]).should.eql([[1,1]]);
+      it('should kill a cell with more than three neighbors', function() {
+        assertIsDeadAfterCycle([0,0], [0,1], [0,2], [1,0])([1,1]);
+      });
+
+      it('should revive a dead cell with three neighbors', function() {
+        assertIsAliveAfterCycle([0,0], [2,0], [2,2])([1,1]);
       });
     });
-
-    // @TODO: Create a method that returns if the cell is alive or not
 
     describe('counting neighbors', function() {
       it('should find zero neighbors to a lonely cell', function() {
