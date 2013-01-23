@@ -67,6 +67,31 @@
       it('should revive a dead cell with three neighbors', function() {
         assertIsAliveAfterCycle([0,0], [2,0], [2,2])([1,1]);
       });
+
+      describe('misc test formations', function() {
+        it('should handle the star formation', function() {
+          var star = [[0,0], [2,0], [1,1], [0,2], [2,2]];
+          var starResult = [[1,0], [0,1], [2,1], [1,2]];
+
+          for (var i = 0; i < starResult.length; i++) {
+            assertIsAliveAfterCycle.apply(this, star)(starResult[i]);
+          }
+        });
+
+        /*
+        it('should handle the blinker formation', function() {
+          var blinker = [[1,0], [1,1], [1,2]];
+          var blinkerResult = [[0,1], [1,1], [2,1]];
+
+          // var result = nextCycleGrid.apply(this, blinker);
+          // console.log(result);
+
+          for (var i = 0; i < blinkerResult.length; i++) {
+            assertIsAliveAfterCycle.apply(this, blinker)(blinkerResult[i]);
+          }
+        });
+        */
+      });
     });
 
     describe('counting neighbors', function() {
