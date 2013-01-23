@@ -54,18 +54,6 @@
       }
     }
 
-    // Keep cells with 2 or 3 neighbors
-    /*
-    for (var i = 0; i < this.liveCells.length; i++) {
-      cell = this.liveCells[i];
-      neighbors = this.neighborsTo(cell[0], cell[1]);
-
-      if (neighbors === 2 || neighbors === 3) {
-        survivors.push(cell);
-      }
-    }
-    */
-
     Grid.apply(grid, survivors);
     return grid;
   };
