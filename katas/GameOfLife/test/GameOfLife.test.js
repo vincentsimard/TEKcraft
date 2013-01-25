@@ -68,29 +68,40 @@
         assertIsAliveAfterCycle([0,0], [2,0], [2,2])([1,1]);
       });
 
-      describe('misc test formations', function() {
+      describe('(test formations)', function() {
+        describe('(still lifes)', function() {
+          it('block', function() {
+            var block = [[0,0], [0,1], [1,0], [1,1]];
+
+            var nextGrid = nextCycleGrid.apply(null, block);
+
+            for (var i = 0; i < block.length; i++) {
+              nextGrid.liveCells.containsArray(block[i]).should.be.true;
+            }
+          });
+        });
+
         it('should handle the star formation', function() {
           var star = [[0,0], [2,0], [1,1], [0,2], [2,2]];
           var starResult = [[1,0], [0,1], [2,1], [1,2]];
 
+          var nextGrid = nextCycleGrid.apply(null, star);
+
           for (var i = 0; i < starResult.length; i++) {
-            assertIsAliveAfterCycle.apply(this, star)(starResult[i]);
+            nextGrid.liveCells.containsArray(starResult[i]).should.be.true;
           }
         });
 
-        /*
         it('should handle the blinker formation', function() {
-          var blinker = [[1,0], [1,1], [1,2]];
+          var blinker = [[1,0], [1,1], [1,2], [5,5]];
           var blinkerResult = [[0,1], [1,1], [2,1]];
 
-          // var result = nextCycleGrid.apply(this, blinker);
-          // console.log(result);
+          var nextGrid = nextCycleGrid.apply(null, blinker);
 
           for (var i = 0; i < blinkerResult.length; i++) {
-            assertIsAliveAfterCycle.apply(this, blinker)(blinkerResult[i]);
+            nextGrid.liveCells.containsArray(blinkerResult[i]).should.be.true;
           }
         });
-        */
       });
     });
 

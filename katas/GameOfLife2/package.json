@@ -1,0 +1,16 @@
+{
+  "name": "GameOfLife",
+  "version": "0.0.0",
+  "description": "GameOfLife kata in JavaScript",
+  "main": "GameOfLife.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": "",
+  "author": "Vincent Simard",
+  "license": "BSD",
+  "devDependencies": {
+    "mocha": "~1.7.0",
+    "chai": "~1.4.2"
+  }
+}
