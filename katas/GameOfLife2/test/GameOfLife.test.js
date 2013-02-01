@@ -32,36 +32,31 @@
     });
 
     it('should keep live cells if created with cells as parameters', function() {
-      var cells1 = withCellsAt([0,0]);
-      var cells2 = withCellsAt([1,1], [2,2]);
+      gol = new GameOfLife(withCellsAt([0,0]));
+      gol.liveCells.should.eql(withCellsAt([0,0]));
 
-      gol = new GameOfLife(cells1);
-      gol.liveCells.should.eql(cells1);
-
-      gol = new GameOfLife(cells2);
-      gol.liveCells.should.eql(cells2);
+      gol = new GameOfLife(withCellsAt([1,1], [2,2]));
+      gol.liveCells.should.eql(withCellsAt([1,1], [2,2]));
     });
 
     describe('after one step', function() {
-      it('should stay empty if it was created empty', function() {
+      function gameAfterOneStep(cells) {
+        gol = new GameOfLife(cells);
         gol.step();
-        gol.liveCells.should.be.empty;
+
+        return gol;
+      }
+
+      it('should stay empty if it was created empty', function() {
+        gameAfterOneStep().liveCells.should.be.empty;
       });
 
       it('should kill a live cell with no neighbor', function() {
-        var cells = withCellsAt([0,0]);
-
-        gol = new GameOfLife(cells);
-        gol.step();
-        gol.liveCells.should.be.empty;
+        gameAfterOneStep(withCellsAt([0,0])).liveCells.should.be.empty;
       });
 
       it('should kill a live cell with one neighbor', function() {
-        var cells = withCellsAt([0,0], [1,0]);
-
-        gol = new GameOfLife(cells);
-        gol.step();
-        gol.liveCells.should.be.empty;
+        gameAfterOneStep(withCellsAt([0,0], [1,0])).liveCells.should.be.empty;
       });
 
       // @PENDING: Need to count neighbors
@@ -77,43 +72,34 @@
     });
 
     describe('counting neighbors', function() {
+      function neighborCountForCells() {
+        var cells = withCellsAt.apply(this, arguments);
+        gol = new GameOfLife(cells);
+
+        return function(x, y) {
+          return gol.neighborsTo(x, y);
+        };
+      }
+
       it('should return zero for a lonely cell', function() {
-        gol.neighborsTo(0,0).should.equal(0);
+        neighborCountForCells()(0, 0).should.equal(0);
       });
 
       it('should not count the current location as a neighbor', function() {
-        var cells = withCellsAt([3,2]);
-
-        gol = new GameOfLife(cells);
-        gol.neighborsTo(3,2).should.equal(0);
+        neighborCountForCells([3,2])(3, 2).should.equal(0);
       });
 
       it('should count cells below', function() {
-        var cells = withCellsAt([5,4]);
-
-        gol = new GameOfLife(cells);
-        gol.neighborsTo(5,5).should.equal(1);
+        neighborCountForCells([5,4])(5, 5).should.equal(1);
       });
 
       it('should count cells above', function() {
-        var cells = withCellsAt([4,6], [5,6]);
-
-        gol = new GameOfLife(cells);
-        gol.neighborsTo(5,5).should.equal(2);
+        neighborCountForCells([4,6], [5,6])(5, 5).should.equal(2);
       });
 
       it('should not count cells that are not immediatly adjacent to the location', function() {
-        var cells = withCellsAt([2,0]);
-
-        gol = new GameOfLife(cells);
-        gol.neighborsTo(0,0).should.equal(0);
+        neighborCountForCells([2,0])(0, 0).should.equal(0);
       });
-
-      // it('should return zero for a location with a cell at two squares away', function() {
-      //   var cells = withCellsAt([0,0]);
-
-      //   gol = new 
-      // });
     });
   });
 
@@ -132,11 +118,11 @@
         [].contains().should.be.false;
       });
 
-      it('should return false if the array is not contained in the array', function() {
+      it('should return false if the object is not contained in the array', function() {
         [].contains([1]).should.be.false;
       });
 
-      it('should return true if the array is contained in the array', function() {
+      it('should return true if the object is contained in the array', function() {
         var loc = new Cell(5,5);
         var otherLoc = new Cell(5,5);
 
