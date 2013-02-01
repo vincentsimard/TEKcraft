@@ -2,10 +2,31 @@
   'use strict';
 
   var chai = require('chai');
+  var chaiThings = require('chai-things');
   var should = chai.should();
+
+  chai.use(chaiThings);
 
   var GameOfLife = require('./../GameOfLife').GameOfLife;
   var Cell = require('./../Cell').Cell;
+
+
+
+  chai.use(function (_chai, utils) {
+    utils.addMethod(chai.Assertion.prototype,
+      'containCells', function (cells) {
+        var game = utils.flag(this, 'object');
+        var cell;
+
+        for (var i = 0; i < cells.length; i++) {
+          cell = cells[i];
+          game.liveCells.should.include.something.that.deep.equals(cell);
+        }
+      }
+    );
+  });
+
+
 
   describe('GameOfLife', function() {
     var gol;
@@ -64,19 +85,22 @@
       it('should keep a live cell with two neighbors', function() {
         var startCells = withCellsAt([0,0], [1,1], [2,0]);
         var endCells = withCellsAt([1,1]);
-        gameAfterOneStep(startCells).liveCells.should.eql(endCells);
+
+        gameAfterOneStep(startCells).should.containCells(endCells);
       });
 
       it('should keep a live cell with three neighbors', function() {
         var startCells = withCellsAt([0,0], [1,1], [2,0], [2,2]);
         var endCells = withCellsAt([1,1]);
-        gameAfterOneStep(startCells).liveCells.should.eql(endCells);
+
+        gameAfterOneStep(startCells).should.containCells(endCells);
       });
 
       it('should kill a live cell with more than three neighbors', function() {
         var startCells = withCellsAt([0,0], [1,0], [2,0], [0,1], [1,1]);
         var endCells = withCellsAt([0,0], [2,0], [0,1]);
-        gameAfterOneStep(startCells).liveCells.should.eql(endCells);
+
+        gameAfterOneStep(startCells).should.containCells(endCells);
       });
 
       // @TODO: Need to use contains instead of eql() in tests
