@@ -103,7 +103,6 @@
         gameAfterOneStep(startCells).should.containCells(endCells);
       });
 
-      // @TODO: Need to use contains instead of eql() in tests
       it('should revive a dead cell with three neighbors');
     });
 
@@ -135,6 +134,27 @@
 
       it('should not count cells that are not immediatly adjacent to the location', function() {
         neighborCountForCells([2,0])(0, 0).should.equal(0);
+      });
+    });
+
+    describe('dimensions of the GameOfLife environment', function() {
+      it('should have 0 width and height when created empty', function() {
+        gol.width().should.equal(0);
+        gol.height().should.equal(0);
+      });
+
+      it('should have 1 width and height when created with a single cell', function() {
+        gol = new GameOfLife(withCellsAt([0,0]));
+
+        gol.width().should.equal(1);
+        gol.height().should.equal(1);
+      });
+
+      it('should have 2 width and height when created with a block of 4 cells', function() {
+        gol = new GameOfLife(withCellsAt([0,0], [0,1], [1,0], [1,1]));
+
+        gol.width().should.equal(2);
+        gol.height().should.equal(2);
       });
     });
   });

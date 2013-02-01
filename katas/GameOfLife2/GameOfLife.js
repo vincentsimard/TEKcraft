@@ -29,6 +29,16 @@
     return neighbors === 2 || neighbors === 3;
   };
 
+  GameOfLife.prototype.shouldBecomeAlive = function(location) {
+    // var neighbors;
+
+    // if (this.cellIsAliveAt(location)) { return false; }
+
+    // neighbors = this.neighborsTo(location.x, location.y);
+
+    // return neighbors === 3;
+  };
+
   GameOfLife.prototype.neighborsTo = function(x, y) {
     var neighbors = [];
     var location;
@@ -53,6 +63,36 @@
 
   GameOfLife.prototype.cellIsAliveAt = function(location) {
     return this.liveCells.contains(location);
+  };
+
+  GameOfLife.prototype.minMax = function(dimension) {
+    var values = [];
+    var max, min;
+
+    for (var i = 0; i < this.liveCells.length; i++) {
+      values.push(this.liveCells[i][dimension]);
+    }
+
+    max = Math.max.apply(null, values);
+    min = Math.min.apply(null, values);
+
+    return [min, max];
+  };
+
+  GameOfLife.prototype.width = function() {
+    var minMax = this.minMax('x');
+    var min = minMax[0];
+    var max = minMax[1];
+
+    return this.liveCells.length <= 0 ? 0 : max - min + 1;
+  };
+
+  GameOfLife.prototype.height = function() {
+    var minMax = this.minMax('y');
+    var min = minMax[0];
+    var max = minMax[1];
+
+    return this.liveCells.length <= 0 ? 0 : max - min + 1;
   };
 
   Array.prototype.contains = function(obj) {
