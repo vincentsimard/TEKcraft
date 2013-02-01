@@ -14,10 +14,30 @@
     var cells = [];
     var cell;
 
+    var minX;
+    var maxX;
+    var minY;
+    var maxY;
+
+    if (this.liveCells.length <= 0) { return; }
+
+    minX = this.minMax('x')[0];
+    maxX = this.minMax('x')[1];
+    minY = this.minMax('y')[0];
+    maxY = this.minMax('y')[1];
+
     for (var i = 0; i < this.liveCells.length; i++) {
       cell = this.liveCells[i];
 
       if (this.shouldSurvive(cell)) { cells.push(cell); }
+    }
+
+    for (var x = minX; x <= maxX; x++) {
+      for (var y = minY; y <= maxY; y++) {
+        cell = new Cell(x, y);
+
+        if (this.shouldReviveDeadCell(cell)) { cells.push(cell); }
+      }
     }
 
     this.liveCells = cells;
@@ -29,14 +49,10 @@
     return neighbors === 2 || neighbors === 3;
   };
 
-  GameOfLife.prototype.shouldBecomeAlive = function(location) {
-    // var neighbors;
+  GameOfLife.prototype.shouldReviveDeadCell = function(location) {
+    var neighbors = this.neighborsTo(location.x, location.y);
 
-    // if (this.cellIsAliveAt(location)) { return false; }
-
-    // neighbors = this.neighborsTo(location.x, location.y);
-
-    // return neighbors === 3;
+    return neighbors === 3 && !this.cellIsAliveAt(location);
   };
 
   GameOfLife.prototype.neighborsTo = function(x, y) {

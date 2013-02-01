@@ -103,7 +103,12 @@
         gameAfterOneStep(startCells).should.containCells(endCells);
       });
 
-      it('should revive a dead cell with three neighbors');
+      it('should revive a dead cell with three neighbors', function() {
+        var startCells = withCellsAt([2,2], [3,1], [3,3]);
+        var endCells = withCellsAt([3,2]);
+
+        gameAfterOneStep(startCells).should.containCells(endCells);
+      });
     });
 
     describe('counting neighbors', function() {
