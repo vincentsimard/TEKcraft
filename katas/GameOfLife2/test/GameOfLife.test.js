@@ -62,17 +62,24 @@
       });
 
       it('should keep a live cell with two neighbors', function() {
-        gameAfterOneStep(withCellsAt([0,0], [1,1], [2,0])).liveCells.should.eql(withCellsAt([1,1]));
+        var startCells = withCellsAt([0,0], [1,1], [2,0]);
+        var endCells = withCellsAt([1,1]);
+        gameAfterOneStep(startCells).liveCells.should.eql(endCells);
       });
 
       it('should keep a live cell with three neighbors', function() {
-        gameAfterOneStep(withCellsAt([0,0], [1,1], [2,0], [2,2])).liveCells.should.eql(withCellsAt([1,1]));
+        var startCells = withCellsAt([0,0], [1,1], [2,0], [2,2]);
+        var endCells = withCellsAt([1,1]);
+        gameAfterOneStep(startCells).liveCells.should.eql(endCells);
       });
 
       it('should kill a live cell with more than three neighbors', function() {
-        // gameAfterOneStep(withCellsAt([0,0], [1,0], [2,0], [0,1], [1,1])).liveCells.should.eql(withCellsAt([1,1]));
+        var startCells = withCellsAt([0,0], [1,0], [2,0], [0,1], [1,1]);
+        var endCells = withCellsAt([0,0], [2,0], [0,1]);
+        gameAfterOneStep(startCells).liveCells.should.eql(endCells);
       });
 
+      // @TODO: Need to use contains instead of eql() in tests
       it('should revive a dead cell with three neighbors');
     });
 
