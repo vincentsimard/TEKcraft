@@ -102,32 +102,4 @@
       });
     });
   });
-
-  describe('Cell', function() {
-    it('should keep coordinates', function() {
-      var cell = new Cell(0,0);
-
-      cell.x.should.equal(0);
-      cell.y.should.equal(0);
-    });
-  });
-
-  describe('Array', function() {
-    describe('.contains', function() {
-      it('should return false if no parameters are passed', function() {
-        [].contains().should.be.false;
-      });
-
-      it('should return false if the object is not contained in the array', function() {
-        [].contains([1]).should.be.false;
-      });
-
-      it('should return true if the object is contained in the array', function() {
-        var loc = new Cell(5,5);
-        var otherLoc = new Cell(5,5);
-
-        [loc].contains(otherLoc).should.be.true;
-      });
-    });
-  });
 })();
