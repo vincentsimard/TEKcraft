@@ -12,18 +12,21 @@
 
   GameOfLife.prototype.step = function() {
     var cells = [];
-    var cell, neighbors;
+    var cell;
 
     for (var i = 0; i < this.liveCells.length; i++) {
       cell = this.liveCells[i];
-      neighbors = this.neighborsTo(cell.x, cell.y);
 
-      if (neighbors === 2 || neighbors === 3) {
-        cells.push(cell);
-      }
+      if (this.shouldSurvive(cell)) { cells.push(cell); }
     }
 
     this.liveCells = cells;
+  };
+
+  GameOfLife.prototype.shouldSurvive = function(cell) {
+    var neighbors = this.neighborsTo(cell.x, cell.y);
+
+    return neighbors === 2 || neighbors === 3;
   };
 
   GameOfLife.prototype.neighborsTo = function(x, y) {
@@ -39,13 +42,17 @@
       for (var j = minY; j <= maxY; j++) {
         location = new Cell(i, j);
 
-        if (this.liveCells.contains(location) && !location.isAt(x, y)) {
+        if (this.cellIsAliveAt(location) && !location.isAt(x, y)) {
           neighbors.push(location);
         }
       }
     }
 
     return neighbors.length;
+  };
+
+  GameOfLife.prototype.cellIsAliveAt = function(location) {
+    return this.liveCells.contains(location);
   };
 
   Array.prototype.contains = function(obj) {
