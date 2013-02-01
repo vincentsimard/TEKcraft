@@ -17,6 +17,7 @@
     this.liveCells = args;
     this.width = 0;
     this.height = 0;
+    var maxX, minX, maxY, minY;
 
     for (var i = 0; i < this.liveCells.length; i++) {
       dimensions[0].push(this.liveCells[i][0]);
@@ -24,13 +25,13 @@
     }
 
     if (this.liveCells.length > 0) {
-      this.maxX = Math.max.apply(null, dimensions[0]);
-      this.minX = Math.min.apply(null, dimensions[0]);
-      this.maxY = Math.max.apply(null, dimensions[1]);
-      this.minY = Math.min.apply(null, dimensions[1]);
+      maxX = Math.max.apply(null, dimensions[0]);
+      minX = Math.min.apply(null, dimensions[0]);
+      maxY = Math.max.apply(null, dimensions[1]);
+      minY = Math.min.apply(null, dimensions[1]);
 
-      this.width = this.maxX - this.minX + 1;
-      this.height = this.maxY - this.minY + 1;
+      this.width = maxX - minX + 1;
+      this.height = maxY - minY + 1;
     }
   };
 
@@ -38,12 +39,6 @@
     var grid = new Grid();
     var survivors = [];
     var cell;
-
-    // Return empty grid if the grid is empty
-    if (this.liveCells.length === 0) {
-      Grid.apply(grid, survivors);
-      return grid;
-    }
 
     for (var i = 0; i < this.width; i++) {
       for (var j = 0; j < this.height; j++) {
