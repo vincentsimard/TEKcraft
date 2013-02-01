@@ -11,7 +11,19 @@
   };
 
   GameOfLife.prototype.step = function() {
-    this.liveCells = [];
+    var cells = [];
+    var cell, neighbors;
+
+    for (var i = 0; i < this.liveCells.length; i++) {
+      cell = this.liveCells[i];
+      neighbors = this.neighborsTo(cell.x, cell.y);
+
+      if (neighbors === 2 || neighbors === 3) {
+        cells.push(cell);
+      }
+    }
+
+    this.liveCells = cells;
   };
 
   GameOfLife.prototype.neighborsTo = function(x, y) {

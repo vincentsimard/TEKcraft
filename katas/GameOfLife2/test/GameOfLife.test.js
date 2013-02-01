@@ -52,22 +52,27 @@
       });
 
       it('should kill a live cell with no neighbor', function() {
-        gameAfterOneStep(withCellsAt([0,0])).liveCells.should.be.empty;
+        var startCells = withCellsAt([0,0]);
+        gameAfterOneStep(startCells).liveCells.should.be.empty;
       });
 
       it('should kill a live cell with one neighbor', function() {
-        gameAfterOneStep(withCellsAt([0,0], [1,0])).liveCells.should.be.empty;
+        var startCells = withCellsAt([0,0], [1,0]);
+        gameAfterOneStep(startCells).liveCells.should.be.empty;
       });
 
-      // @PENDING: Need to count neighbors
-      // it('should keep a live cell with two neighbors', function() {
-      //   gol = new GameOfLife([[0,0], [1,0], [2,0]]);
-      //   gol.step();
-      //   gol.liveCells.should.eql([[1,0]]);
-      // });
+      it('should keep a live cell with two neighbors', function() {
+        gameAfterOneStep(withCellsAt([0,0], [1,1], [2,0])).liveCells.should.eql(withCellsAt([1,1]));
+      });
 
-      it('should keep a live cell with two or three neighbors');
-      it('should kill a live cell with more than three neighbors');
+      it('should keep a live cell with three neighbors', function() {
+        gameAfterOneStep(withCellsAt([0,0], [1,1], [2,0], [2,2])).liveCells.should.eql(withCellsAt([1,1]));
+      });
+
+      it('should kill a live cell with more than three neighbors', function() {
+        // gameAfterOneStep(withCellsAt([0,0], [1,0], [2,0], [0,1], [1,1])).liveCells.should.eql(withCellsAt([1,1]));
+      });
+
       it('should revive a dead cell with three neighbors');
     });
 
